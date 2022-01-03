@@ -15,9 +15,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-//@RunWith(PowerMockRunner.class)
-//@PrepareForTest({io.benlewis.tagminigame.TagPlugin.class, org.bukkit.Server.class, org.bukkit.plugin.PluginManager.class})
-//@PrepareForTest(fullyQualifiedNames ={"org.bukkit.*","io.benlewis.tagminigame.TagPlugin.class"})
 public class TagGameManagerTests {
 
     private TagPlugin plugin;
