@@ -17,16 +17,16 @@ public class CmdQuit extends TagCommand{
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player player){
-            if (plugin.getTagPlayerManager().hasPlayer(player)){
-                TagPlayerQuitTagGameEvent quitEvent = new TagPlayerQuitTagGameEvent(plugin.getTagPlayerManager().getGPlayer(player));
-                Bukkit.getPluginManager().callEvent(quitEvent);
-            }
-            else {
-                sender.sendMessage(ChatColor.RED + "You are not in a game.");
-            }
+        if (!(sender instanceof Player player)) {
+            sender.sendMessage(ChatColor.RED + "You must be a player to use this command.");
+            return true;
         }
-        else sender.sendMessage(ChatColor.RED + "You must be a player to use this command.");
+        if (!plugin.getTagPlayerManager().hasPlayer(player)) {
+            sender.sendMessage(ChatColor.RED + "You are not in a game.");
+            return true;
+        }
+        TagPlayerQuitTagGameEvent quitEvent = new TagPlayerQuitTagGameEvent(plugin.getTagPlayerManager().getGPlayer(player));
+        Bukkit.getPluginManager().callEvent(quitEvent);
         return true;
     }
 }

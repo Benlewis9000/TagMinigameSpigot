@@ -18,18 +18,13 @@ public class CmdCreate extends TagCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender.isOp() || sender.hasPermission("tag.create")){
-            try {
-                TagGame game = plugin.getTagGameManager().createGame();
-                sender.sendMessage(ChatColor.GREEN + "Game created with ID " + game.getId() + "!");
-            }
-            catch (Exception e){
-                sender.sendMessage(ChatColor.RED + "Game creation failed: " + e.getMessage() + ".");
-                e.printStackTrace();
-            }
+        try {
+            TagGame game = plugin.getTagGameManager().createGame();
+            sender.sendMessage(ChatColor.GREEN + "Game created with ID " + game.getId() + "!");
         }
-        else {
-            sender.sendMessage(ChatColor.RED + "You do not have permission to create games.");
+        catch (Exception e){
+            sender.sendMessage(ChatColor.RED + "Game creation failed: " + e.getMessage() + ".");
+            e.printStackTrace();
         }
         return true;
     }
