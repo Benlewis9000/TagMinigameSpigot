@@ -1,4 +1,4 @@
-package listenertests;
+package tests.listenertests;
 
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
@@ -51,7 +51,8 @@ public class EntityDamageByEntityListenerTest implements Listener {
         game.addPlayer(victim);
         TagPlayer tpAttacker = plugin.getTagPlayerManager().getGPlayer(attacker);
         TagPlayer tpVictim = plugin.getTagPlayerManager().getGPlayer(victim);
-        EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(attacker, victim, EntityDamageEvent.DamageCause.CUSTOM, 0.0);
+        EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(attacker, victim,
+                EntityDamageEvent.DamageCause.CUSTOM, 0.0);
         server.getPluginManager().callEvent(event);
         assertEquals(tpAttacker, tagEvent.getAttacker());
         assertEquals(tpVictim, tagEvent.getVictim());

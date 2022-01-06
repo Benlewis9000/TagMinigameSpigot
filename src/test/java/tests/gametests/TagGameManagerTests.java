@@ -1,33 +1,28 @@
-package gametests;
+package tests.gametests;
 
-import io.benlewis.tagminigame.TagPlugin;
 import io.benlewis.tagminigame.game.tag.TagGame;
 import io.benlewis.tagminigame.game.tag.TagGameManager;
-import org.bukkit.Server;
-import org.bukkit.plugin.PluginManager;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tests.MockBukkitTests;
 
 import java.util.NoSuchElementException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
-public class TagGameManagerTests {
-
-    private TagPlugin plugin;
-    private Server server;
-    private PluginManager pm;
+public class TagGameManagerTests extends MockBukkitTests {
 
     @BeforeEach
     void setUp(){
-        plugin = mock(TagPlugin.class);
-        server = mock(Server.class);
-        pm = mock(PluginManager.class);
-        when(plugin.getServer()).thenReturn(server);
-        when(server.getPluginManager()).thenReturn(pm);
+        setUpBukkit();
+    }
+
+    @AfterEach
+    void tearDown(){
+        tearDownBukkit();
     }
 
     @Test
