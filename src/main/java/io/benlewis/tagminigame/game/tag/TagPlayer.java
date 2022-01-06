@@ -1,21 +1,35 @@
 package io.benlewis.tagminigame.game.tag;
 
 import io.benlewis.tagminigame.game.IGPlayer;
+import org.bukkit.Server;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
+
+import static java.util.Objects.requireNonNull;
 
 public class TagPlayer implements IGPlayer {
 
-    private final Player player;
+    private final Server server;
+    private final UUID playerUuid;
+    private final int gameId;
     private boolean tagged;
 
-    protected TagPlayer(Player player){
-        this.player = player;
+    protected TagPlayer(Player player, int gameId){
+        this.server = player.getServer();
+        this.playerUuid = player.getUniqueId();
+        this.gameId = gameId;
         this.tagged = false;
     }
 
     @Override
     public Player getPlayer() {
-        return player;
+        return requireNonNull(server.getPlayer(playerUuid), "no Player with UUID " + playerUuid + " is online");
+    }
+
+    @Override
+    public int getGameId() {
+        return this.gameId;
     }
 
     /**

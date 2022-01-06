@@ -1,29 +1,20 @@
 package io.benlewis.tagminigame.events;
 
+import io.benlewis.tagminigame.game.tag.TagPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class PlayerQuitTagGameEvent extends Event {
+public class TagPlayerQuitTagGameEvent extends TagEvent {
 
     private static final HandlerList HANDLERS = new HandlerList();
-    private final Player player;
-    private boolean handled;
+    private final TagPlayer player;
 
-    public PlayerQuitTagGameEvent(Player player) {
+    public TagPlayerQuitTagGameEvent(TagPlayer player) {
         this.player = player;
     }
 
-    public Player getPlayer() {
+    public TagPlayer getPlayer() {
         return player;
-    }
-
-    public boolean getHandled(){
-        return this.handled;
-    }
-
-    public void setHandled(){
-        this.handled = true;
     }
 
     public static HandlerList getHandlerList() {

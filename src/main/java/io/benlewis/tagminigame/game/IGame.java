@@ -20,11 +20,11 @@ public interface IGame<T extends IGPlayer, V extends IGamePhase> {
     Collection<T> getGPlayers();
 
     /**
-     * Get the {@link IGPlayer} wrapper for a {@link Player}. Throws {@link NoSuchElementException} if {@link Player} cannot be found in the game.
-     * @param player to get wrapper of
-     * @return the players wrapper
+     * Query whether a {@link T} is in the game.
+     * @param player to check for
+     * @return true if player is the game
      */
-    T getGPlayer(Player player);
+    boolean hasGPlayer(T player);
 
     /**
      * Add a {@link Player} to the game.
@@ -33,10 +33,10 @@ public interface IGame<T extends IGPlayer, V extends IGamePhase> {
     void addPlayer(Player player);
 
     /**
-     * Remove a {@link Player} from the game (if present).
+     * Remove an {@link IGPlayer} from the game (if present).
      * @param player to remove
      */
-    void removePlayer(Player player);
+    void removePlayer(T player);
 
     /**
      * Get the current {@link IGamePhase} the game is in.

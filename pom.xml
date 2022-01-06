@@ -63,6 +63,12 @@
             <version>4.2.0</version>
             <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.github.seeseemelk/MockBukkit-v1.18 -->
+        <dependency>
+            <groupId>com.github.seeseemelk</groupId>
+            <artifactId>MockBukkit-v1.18</artifactId>
+            <version>1.15.0</version>
+        </dependency>
 
     </dependencies>
 

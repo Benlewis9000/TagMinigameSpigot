@@ -5,31 +5,42 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.NoSuchElementException;
+import java.util.UUID;
+
+import static java.util.Objects.requireNonNull;
 
 public class TagPlayerManager implements IGPlayerManager<TagPlayer> {
 
-    private final HashMap<Player, TagPlayer> players = new HashMap<>();
+    private final HashMap<UUID, TagPlayer> players = new HashMap<>();
 
     @Override
-    public TagPlayer createGPlayer(Player player) {
-        if (players.containsKey(player)){
+    public TagPlayer createGPlayer(Player player, int gameId) {
+        if (hasPlayer(player)){
             throw new IllegalArgumentException("a wrapper for Player " + player.getName() + " already exists");
         }
-        TagPlayer tagPlayer = new TagPlayer(player);
-        players.put(player, tagPlayer);
+        TagPlayer tagPlayer = new TagPlayer(player, gameId);
+        players.put(player.getUniqueId(), tagPlayer);
         return tagPlayer;
     }
 
     @Override
     public void destroyGPlayer(Player player) {
-        players.remove(player);
+        players.remove(player.getUniqueId());
+    }
+
+    @Override
+    public void destroyGPlayer(TagPlayer player) {
+        destroyGPlayer(player.getPlayer());
+    }
+
+    @Override
+    public boolean hasPlayer(Player player) {
+        return players.containsKey(player.getUniqueId());
     }
 
     @Override
     public TagPlayer getGPlayer(Player player) {
-        if (!players.containsKey(player)){
-            throw new NoSuchElementException("a wrapper for Player " + player.getName() + " was not found");
-        }
-        return players.get(player);
+        return requireNonNull(players.get(player.getUniqueId()), "a wrapper for Player " + player.getName()
+                + " was not found");
     }
 }

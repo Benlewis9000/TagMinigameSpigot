@@ -10,10 +10,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class TagGameManager implements IGameManager {
+public class TagGameManager implements IGameManager<TagGame> {
 
     private final TagPlugin plugin;
-    private Map<Integer, TagGame> games;
+    private final Map<Integer, TagGame> games;
     private int nextGameId;
 
     public TagGameManager(TagPlugin plugin) {
@@ -23,7 +23,7 @@ public class TagGameManager implements IGameManager {
     }
 
     @Override
-    public Collection<IGame> getGames() {
+    public Collection<TagGame> getGames() {
         return Collections.unmodifiableCollection(games.values());
     }
 

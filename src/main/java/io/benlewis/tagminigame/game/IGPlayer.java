@@ -14,7 +14,6 @@ public interface IGPlayer {
      * Get the ID of the {@link IGame} the player is in
      * @return id of player's game
      */
-    // TODO remove (or implement if alternatives fail) - may actually need down the line as overload incase
-    //      game data is needed to help build IGPlayer
-    // int getGameId();
+     int getGameId();
+
 }

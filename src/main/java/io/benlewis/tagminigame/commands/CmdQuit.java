@@ -1,7 +1,8 @@
 package io.benlewis.tagminigame.commands;
 
 import io.benlewis.tagminigame.TagPlugin;
-import io.benlewis.tagminigame.events.PlayerQuitTagGameEvent;
+import io.benlewis.tagminigame.events.TagPlayerQuitTagGameEvent;
+import io.benlewis.tagminigame.game.tag.TagPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -16,13 +17,16 @@ public class CmdQuit extends TagCommand{
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player){
-            PlayerQuitTagGameEvent quitEvent = new PlayerQuitTagGameEvent((Player) sender);
-            Bukkit.getPluginManager().callEvent(quitEvent);
-            if (!quitEvent.getHandled()){
+        if (sender instanceof Player player){
+            if (plugin.getTagPlayerManager().hasPlayer(player)){
+                TagPlayerQuitTagGameEvent quitEvent = new TagPlayerQuitTagGameEvent(plugin.getTagPlayerManager().getGPlayer(player));
+                Bukkit.getPluginManager().callEvent(quitEvent);
+            }
+            else {
                 sender.sendMessage(ChatColor.RED + "You are not in a game.");
             }
         }
+        else sender.sendMessage(ChatColor.RED + "You must be a player to use this command.");
         return true;
     }
 }
