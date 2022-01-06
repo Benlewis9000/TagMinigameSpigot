@@ -1,8 +1,7 @@
 package io.benlewis.tagminigame.game.tag;
 
 import io.benlewis.tagminigame.TagPlugin;
-import io.benlewis.tagminigame.game.IGame;
-import io.benlewis.tagminigame.game.IGameManager;
+import io.benlewis.tagminigame.game.api.IGameManager;
 
 import java.util.Collection;
 import java.util.Collections;

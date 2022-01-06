@@ -1,4 +1,4 @@
-package io.benlewis.tagminigame.game;
+package io.benlewis.tagminigame.game.api;
 
 import org.bukkit.entity.Player;
 

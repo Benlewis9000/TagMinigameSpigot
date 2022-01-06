@@ -1,10 +1,9 @@
 package io.benlewis.tagminigame.game.tag;
 
-import io.benlewis.tagminigame.game.IGPlayerManager;
+import io.benlewis.tagminigame.game.api.IGPlayerManager;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
-import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;

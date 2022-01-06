@@ -1,9 +1,8 @@
-package io.benlewis.tagminigame.game;
+package io.benlewis.tagminigame.game.api;
 
 import org.bukkit.entity.Player;
 
 import java.util.Collection;
-import java.util.NoSuchElementException;
 
 public interface IGame<T extends IGPlayer, V extends IGamePhase> {
 

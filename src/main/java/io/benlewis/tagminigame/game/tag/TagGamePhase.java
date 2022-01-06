@@ -1,8 +1,9 @@
 package io.benlewis.tagminigame.game.tag;
 
-import io.benlewis.tagminigame.game.IGamePhase;
+import io.benlewis.tagminigame.game.api.IGamePhase;
 
 public enum TagGamePhase implements IGamePhase {
     LOBBY,
-    GAME
+    GAME,
+    END
 }

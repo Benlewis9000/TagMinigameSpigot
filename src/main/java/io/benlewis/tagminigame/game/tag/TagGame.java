@@ -3,7 +3,7 @@ package io.benlewis.tagminigame.game.tag;
 import io.benlewis.tagminigame.TagPlugin;
 import io.benlewis.tagminigame.events.TagPlayerHitTagPlayerEvent;
 import io.benlewis.tagminigame.events.TagPlayerQuitTagGameEvent;
-import io.benlewis.tagminigame.game.IGame;
+import io.benlewis.tagminigame.game.api.IGame;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

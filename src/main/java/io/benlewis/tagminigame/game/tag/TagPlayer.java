@@ -1,6 +1,6 @@
 package io.benlewis.tagminigame.game.tag;
 
-import io.benlewis.tagminigame.game.IGPlayer;
+import io.benlewis.tagminigame.game.api.IGPlayer;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
