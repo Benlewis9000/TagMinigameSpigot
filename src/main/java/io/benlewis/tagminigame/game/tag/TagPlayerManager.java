@@ -13,7 +13,7 @@ public class TagPlayerManager implements IGPlayerManager<TagPlayer> {
     private final HashMap<UUID, TagPlayer> players = new HashMap<>();
 
     @Override
-    public TagPlayer createGPlayer(Player player, int gameId) {
+    public TagPlayer createWrapper(Player player, int gameId) {
         if (hasPlayer(player)){
             throw new IllegalArgumentException("a wrapper for Player " + player.getName() + " already exists");
         }
@@ -23,13 +23,13 @@ public class TagPlayerManager implements IGPlayerManager<TagPlayer> {
     }
 
     @Override
-    public void destroyGPlayer(Player player) {
+    public void destroyWrapper(Player player) {
         players.remove(player.getUniqueId());
     }
 
     @Override
-    public void destroyGPlayer(TagPlayer player) {
-        destroyGPlayer(player.getPlayer());
+    public void destroyWrapper(TagPlayer player) {
+        destroyWrapper(player.getPlayer());
     }
 
     @Override
@@ -38,7 +38,7 @@ public class TagPlayerManager implements IGPlayerManager<TagPlayer> {
     }
 
     @Override
-    public TagPlayer getGPlayer(Player player) {
+    public TagPlayer getWrapper(Player player) {
         return requireNonNull(players.get(player.getUniqueId()), "a wrapper for Player " + player.getName()
                 + " was not found");
     }

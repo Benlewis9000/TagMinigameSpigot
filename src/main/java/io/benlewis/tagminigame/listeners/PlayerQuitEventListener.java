@@ -1,7 +1,7 @@
 package io.benlewis.tagminigame.listeners;
 
 import io.benlewis.tagminigame.TagPlugin;
-import io.benlewis.tagminigame.events.TagPlayerQuitTagGameEvent;
+import io.benlewis.tagminigame.game.tag.TagGame;
 import io.benlewis.tagminigame.game.tag.TagPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,9 +14,9 @@ public record PlayerQuitEventListener(TagPlugin plugin) implements Listener {
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         if (!plugin.getTagPlayerManager().hasPlayer(player)) return;
-
-        TagPlayer tagPlayer = plugin.getTagPlayerManager().getGPlayer(player);
-        plugin.getServer().getPluginManager().callEvent(new TagPlayerQuitTagGameEvent(tagPlayer));
+        TagPlayer tagPlayer = plugin.getTagPlayerManager().getWrapper(player);
+        TagGame game = plugin.getTagGameManager().getGame(tagPlayer.getGameId());
+        game.playerQuit(tagPlayer);
     }
 
 }

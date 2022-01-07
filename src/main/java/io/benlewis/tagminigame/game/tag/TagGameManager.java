@@ -40,7 +40,6 @@ public class TagGameManager implements IGameManager<TagGame> {
         }
         TagGame game = new TagGame(plugin, id);
         games.put(game.getId(), game);
-        plugin.getServer().getPluginManager().registerEvents(game, plugin);
         return game;
     }
 

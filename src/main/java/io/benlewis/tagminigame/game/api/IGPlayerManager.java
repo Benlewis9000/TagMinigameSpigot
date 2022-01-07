@@ -11,15 +11,15 @@ public interface IGPlayerManager<T extends IGPlayer> {
      * @param gameId id of players game
      * @return the players wrapper
      */
-    T createGPlayer(Player player, int gameId);
+    T createWrapper(Player player, int gameId);
 
     /**
      * Remove a {@link Player} and associated {@link IGPlayer} wrapper from the manager.
      * @param player to remove from manager
      */
-    void destroyGPlayer(Player player);
+    void destroyWrapper(Player player);
 
-    void destroyGPlayer(T player);
+    void destroyWrapper(T player);
 
     /**
      * Query whether an {@link IGPlayer} wrapper exists for the given {@link Player}
@@ -34,5 +34,5 @@ public interface IGPlayerManager<T extends IGPlayer> {
      * @param player to get wrapper of
      * @return the wrapper of the player
      */
-    T getGPlayer(Player player);
+    T getWrapper(Player player);
 }

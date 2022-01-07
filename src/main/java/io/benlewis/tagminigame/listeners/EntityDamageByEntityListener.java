@@ -1,7 +1,6 @@
 package io.benlewis.tagminigame.listeners;
 
 import io.benlewis.tagminigame.TagPlugin;
-import io.benlewis.tagminigame.events.TagPlayerHitTagPlayerEvent;
 import io.benlewis.tagminigame.game.tag.TagPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -28,14 +27,15 @@ public record EntityDamageByEntityListener(TagPlugin plugin) implements Listener
             event.setCancelled(true);
             return;
         }
-        TagPlayer tpDamager = plugin.getTagPlayerManager().getGPlayer(pDamager);
-        TagPlayer tpDamaged = plugin.getTagPlayerManager().getGPlayer(pDamaged);
+        TagPlayer tpDamager = plugin.getTagPlayerManager().getWrapper(pDamager);
+        TagPlayer tpDamaged = plugin.getTagPlayerManager().getWrapper(pDamaged);
         if (tpDamager.getGameId() != tpDamaged.getGameId()) {
             tpDamager.getPlayer().sendMessage(ChatColor.RED + "You cannot tag someone who is not in your game!");
             event.setCancelled(true);
             return;
         }
-        plugin.getServer().getPluginManager().callEvent(new TagPlayerHitTagPlayerEvent(event, tpDamager, tpDamaged, tpDamager.getGameId()));
+        int gameId = tpDamager.getGameId();
+        plugin.getTagGameManager().getGame(gameId).playerHitPlayer(event, tpDamager, tpDamaged);
     }
 
 }

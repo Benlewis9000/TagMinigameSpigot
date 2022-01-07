@@ -1,9 +1,8 @@
 package io.benlewis.tagminigame.commands;
 
 import io.benlewis.tagminigame.TagPlugin;
-import io.benlewis.tagminigame.events.TagPlayerQuitTagGameEvent;
+import io.benlewis.tagminigame.game.tag.TagGame;
 import io.benlewis.tagminigame.game.tag.TagPlayer;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -25,8 +24,9 @@ public class CmdQuit extends TagCommand{
             sender.sendMessage(ChatColor.RED + "You are not in a game.");
             return true;
         }
-        TagPlayerQuitTagGameEvent quitEvent = new TagPlayerQuitTagGameEvent(plugin.getTagPlayerManager().getGPlayer(player));
-        Bukkit.getPluginManager().callEvent(quitEvent);
+        TagPlayer tagPlayer = plugin.getTagPlayerManager().getWrapper(player);
+        TagGame game = plugin.getTagGameManager().getGame(tagPlayer.getGameId());
+        game.playerQuit(tagPlayer);
         return true;
     }
 }

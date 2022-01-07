@@ -34,7 +34,7 @@ public class CmdSetTag extends TagCommand {
             sender.sendMessage(ChatColor.RED + "Player " + player.getName() + " is not in a game.");
             return true;
         }
-        TagPlayer tagPlayer = plugin.getTagPlayerManager().getGPlayer(player);
+        TagPlayer tagPlayer = plugin.getTagPlayerManager().getWrapper(player);
         // TODO update to use appropriate tag event, not just set straight here
         tagPlayer.setTagged(tagged);
         sender.sendMessage(ChatColor.GREEN + player.getName() + " has been set as " + (tagged ? "" : "not") + " tagged.");

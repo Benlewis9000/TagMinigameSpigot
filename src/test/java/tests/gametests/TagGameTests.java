@@ -1,12 +1,7 @@
 package tests.gametests;
 
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
-import io.benlewis.tagminigame.TagPlugin;
 import io.benlewis.tagminigame.game.tag.TagGame;
-import io.benlewis.tagminigame.game.tag.TagGameManager;
 import io.benlewis.tagminigame.game.tag.TagPlayer;
-import io.benlewis.tagminigame.game.tag.TagPlayerManager;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +12,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
 
 public class TagGameTests extends MockBukkitTests {
 
@@ -38,7 +32,7 @@ public class TagGameTests extends MockBukkitTests {
     void gameAddAndRemove_ShouldSucceed(){
         Player p = server.addPlayer();
         game.addPlayer(p);
-        TagPlayer tp = playerManager.getGPlayer(p);
+        TagPlayer tp = playerManager.getWrapper(p);
         assertTrue(game.hasGPlayer(tp));
         assertTrue(playerManager.hasPlayer(p));
         Player presult = tp.getPlayer();

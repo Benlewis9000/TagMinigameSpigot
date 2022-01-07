@@ -1,21 +1,17 @@
 package io.benlewis.tagminigame.game.tag;
 
 import io.benlewis.tagminigame.TagPlugin;
-import io.benlewis.tagminigame.events.TagPlayerHitTagPlayerEvent;
-import io.benlewis.tagminigame.events.TagPlayerQuitTagGameEvent;
 import io.benlewis.tagminigame.game.api.IGame;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Level;
 
-public class TagGame implements IGame<TagPlayer, TagGamePhase>, Listener {
+public class TagGame implements IGame<TagPlayer, TagGamePhase> {
 
     private final TagPlugin plugin;
     private final int id;
@@ -49,13 +45,13 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase>, Listener {
         if (plugin.getTagPlayerManager().hasPlayer(player)) {
             throw new IllegalArgumentException("player " + player.getName() + " is already in a game");
         }
-        players.add(plugin.getTagPlayerManager().createGPlayer(player, this.getId()));
+        players.add(plugin.getTagPlayerManager().createWrapper(player, this.getId()));
     }
 
     @Override
     public void removePlayer(TagPlayer player) {
         players.remove(player);
-        plugin.getTagPlayerManager().destroyGPlayer(player);
+        plugin.getTagPlayerManager().destroyWrapper(player);
     }
 
     @Override
@@ -77,39 +73,34 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase>, Listener {
         // TODO
     }
 
-    @EventHandler
-    public void onPlayerQuitTagGameEvent(TagPlayerQuitTagGameEvent event){
-        TagPlayer player = event.getPlayer();
+    public void playerQuit(TagPlayer player){
         if (players.contains(player)) {
             removePlayer(player);
             player.getPlayer().sendMessage(ChatColor.GREEN + "You have quit game " + getId() + ".");
         }
     }
 
-    @EventHandler
-    public void onTagPlayerHitTagPlayerEvent(TagPlayerHitTagPlayerEvent event){
-        plugin.getLogger().log(Level.INFO, "onTagPlayerHitTagPlayerEvent");
-        if (event.getGameId() != getId()) return;
-        plugin.getLogger().log(Level.INFO, "game id = " + getId());
-        TagPlayer attacker = event.getAttacker();
-        TagPlayer victim = event.getVictim();
+    public void playerHitPlayer(EntityDamageByEntityEvent event, TagPlayer attacker, TagPlayer victim){
         if (!attacker.isTagged()) {
-            plugin.getLogger().log(Level.INFO, "event cancelled");
-            event.getBukkitEvent().setCancelled(true);
+            plugin.debug("event cancelled");
+            event.setCancelled(true);
+            plugin.debug("Test debug");
             return;
         }
-        plugin.getLogger().log(Level.INFO, "attacker is tagged");
+        plugin.debug("attacker is tagged");
         if (victim.isTagged()) {
             attacker.getPlayer().sendMessage(ChatColor.RED + victim.getPlayer().getDisplayName() +
                     " is already tagged!");
-            event.getBukkitEvent().setCancelled(true);
+            event.setCancelled(true);
             return;
         }
-        plugin.getLogger().log(Level.INFO, "victim is not tagged");
-        plugin.getLogger().log(Level.INFO, "doing placeholder tag code");
+        plugin.debug("victim is not tagged");
+        plugin.debug("doing placeholder tag code");
+        event.setDamage(0.0);
+        playerTagPlayer(attacker, victim);
+    }
 
-        // TODO real tag code, following is just placeholder for ingame testing
-        event.getBukkitEvent().setDamage(0.0);
+    public void playerTagPlayer(TagPlayer attacker, TagPlayer victim){
         attacker.setTagged(false);
         attacker.getPlayer().sendMessage(ChatColor.GREEN + "You just tagged "
                 + victim.getPlayer().getDisplayName() + "!");
