@@ -18,6 +18,7 @@ import org.bukkit.plugin.java.annotation.plugin.Plugin;
 import org.bukkit.plugin.java.annotation.plugin.author.Author;
 
 import java.io.File;
+import java.util.logging.Level;
 
 @Plugin(name="TagPlugin", version="1.0.0")
 @Author("Anarchist")
@@ -33,6 +34,7 @@ public class TagPlugin extends JavaPlugin {
 
     private final TagGameManager tagGameManager = new TagGameManager(this);
     private final TagPlayerManager tagPlayerManager = new TagPlayerManager();
+    private final boolean debug = true;
 
     public TagGameManager getTagGameManager() {
         return tagGameManager;
@@ -64,6 +66,11 @@ public class TagPlugin extends JavaPlugin {
     @Override
     public void onDisable(){
 
+    }
+
+    public void debug(String msg){
+        // TODO replace with proper config/options
+        if (this.debug) getLogger().info("[DEBUG] " + msg);
     }
 
 }
