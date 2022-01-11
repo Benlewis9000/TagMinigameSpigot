@@ -3,7 +3,6 @@ package io.benlewis.tagminigame.commands;
 import io.benlewis.tagminigame.TagPlugin;
 import io.benlewis.tagminigame.game.data.PlayerData;
 import io.benlewis.tagminigame.game.tag.TagGame;
-import io.benlewis.tagminigame.game.tag.TagPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -22,7 +21,7 @@ public class CmdQuit extends TagCommand{
             return true;
         }
         PlayerData playerData = plugin.getPlayerDataManager().get(player);
-        if (playerData.isInGame()) {
+        if (!playerData.isInGame()) {
             sender.sendMessage(ChatColor.RED + "You are not in a game.");
             return true;
         }

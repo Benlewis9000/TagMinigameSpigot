@@ -3,8 +3,8 @@ package tests;
 import be.seeseemelk.mockbukkit.MockBukkit;
 import be.seeseemelk.mockbukkit.ServerMock;
 import io.benlewis.tagminigame.TagPlugin;
-import io.benlewis.tagminigame.game.tag.TagGameManager;
 import io.benlewis.tagminigame.game.data.PlayerDataManager;
+import io.benlewis.tagminigame.game.tag.TagGameManager;
 
 public class MockBukkitTests {
 

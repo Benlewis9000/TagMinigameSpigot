@@ -24,7 +24,6 @@ public class PlayerDataManagerTests extends MockBukkitTests {
     @Test
     void createAndDestroyGPlayer_ShouldAddRemoveThenThrow() {
         Player p = server.addPlayer();
-        playerDataManager.register(p);
         assertEquals(playerDataManager.get(p).getPlayer(), p);
         playerDataManager.remove(p);
         assertThrows(NullPointerException.class, () -> playerDataManager.get(p) );

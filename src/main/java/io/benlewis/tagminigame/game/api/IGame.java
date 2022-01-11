@@ -1,10 +1,5 @@
 package io.benlewis.tagminigame.game.api;
 
-import org.bukkit.entity.Player;
-
-import java.util.Collection;
-import java.util.UUID;
-
 public interface IGame<T extends IPlayerWrapper, V extends IGamePhase> extends IPlayerManager<T>{
 
     /**
