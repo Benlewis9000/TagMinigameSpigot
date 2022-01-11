@@ -8,20 +8,23 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import static java.util.Objects.requireNonNull;
 
 public class TagGame implements IGame<TagPlayer, TagGamePhase> {
 
     private final TagPlugin plugin;
     private final int id;
-    private final Set<TagPlayer> players;
+    private final Map<UUID, TagPlayer> players;
     private TagGamePhase phase;
 
     protected TagGame(TagPlugin plugin, int id){
         this.plugin = plugin;
         this.id = id;
-        players = new HashSet<>();
+        players = new HashMap<>();
         phase = TagGamePhase.LOBBY;
     }
 
@@ -31,27 +34,49 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
     }
 
     @Override
-    public Collection<TagPlayer> getGPlayers() {
-        return Collections.unmodifiableCollection(players);
-    }
-
-    @Override
-    public boolean hasGPlayer(TagPlayer player) {
-        return players.contains(player);
-    }
-
-    @Override
-    public void addPlayer(Player player) {
-        if (plugin.getTagPlayerManager().hasPlayer(player)) {
+    public TagPlayer register(Player player) {
+        if (!plugin.getPlayerDataManager().contains(player)){
+            throw new IllegalArgumentException("there is no data wrapper for Player " + player.getName()  +
+                    " [" + player.getUniqueId() + "]");
+        }
+        if (plugin.getPlayerDataManager().get(player).isInGame()) {
             throw new IllegalArgumentException("player " + player.getName() + " is already in a game");
         }
-        players.add(plugin.getTagPlayerManager().createWrapper(player, this.getId()));
+        TagPlayer tagPlayer = new TagPlayer(player, this.getId());
+        players.put(player.getUniqueId(), tagPlayer);
+        return tagPlayer;
     }
 
     @Override
-    public void removePlayer(TagPlayer player) {
-        players.remove(player);
-        plugin.getTagPlayerManager().destroyWrapper(player);
+    public void remove(Player player) {
+        remove(player.getUniqueId());
+    }
+
+    @Override
+    public void remove(UUID uuid) {
+        players.remove(uuid);
+        plugin.getPlayerDataManager().get(uuid).removeGameId();
+    }
+
+    @Override
+    public boolean contains(Player player) {
+        return contains(player.getUniqueId());
+    }
+
+    @Override
+    public boolean contains(UUID uuid) {
+        return players.containsKey(uuid);
+    }
+
+    @Override
+    public TagPlayer get(Player player) {
+        return null;
+    }
+
+    @Override
+    public TagPlayer get(UUID uuid) {
+        return requireNonNull(players.get(uuid), "a TagPlayer wrapper for UUID" + uuid
+                + " was not found");
     }
 
     @Override
@@ -73,18 +98,19 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         // TODO
     }
 
-    public void playerQuit(TagPlayer player){
-        if (players.contains(player)) {
-            removePlayer(player);
-            player.getPlayer().sendMessage(ChatColor.GREEN + "You have quit game " + getId() + ".");
+    public void playerQuit(Player player){
+        if (contains(player)) {
+            remove(player);
+            player.sendMessage(ChatColor.GREEN + "You have quit game " + getId() + ".");
         }
     }
 
-    public void playerHitPlayer(EntityDamageByEntityEvent event, TagPlayer attacker, TagPlayer victim){
+    public void playerHitPlayer(EntityDamageByEntityEvent event, UUID attackerUuid, UUID victimUuid){
+        TagPlayer attacker = get(attackerUuid);
+        TagPlayer victim = get(victimUuid);
         if (!attacker.isTagged()) {
             plugin.debug("event cancelled");
             event.setCancelled(true);
-            plugin.debug("Test debug");
             return;
         }
         plugin.debug("attacker is tagged");

@@ -13,10 +13,11 @@ public record PlayerQuitEventListener(TagPlugin plugin) implements Listener {
     @EventHandler
     public void onPlayerQuitEvent(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        if (!plugin.getTagPlayerManager().hasPlayer(player)) return;
-        TagPlayer tagPlayer = plugin.getTagPlayerManager().getWrapper(player);
-        TagGame game = plugin.getTagGameManager().getGame(tagPlayer.getGameId());
-        game.playerQuit(tagPlayer);
+        if (!plugin.getPlayerDataManager().contains(player)) return;
+        if (!plugin.getPlayerDataManager().get(player).isInGame()) return;
+        int gameId = plugin.getPlayerDataManager().get(player).getGameId();
+        TagGame game = plugin.getTagGameManager().getGame(gameId);
+        game.playerQuit(player);
     }
 
 }

@@ -1,6 +1,7 @@
 package io.benlewis.tagminigame.listeners;
 
 import io.benlewis.tagminigame.TagPlugin;
+import io.benlewis.tagminigame.game.data.PlayerData;
 import io.benlewis.tagminigame.game.tag.TagPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Entity;
@@ -16,26 +17,26 @@ public record EntityDamageByEntityListener(TagPlugin plugin) implements Listener
         Entity damager = event.getDamager();
         Entity entity = event.getEntity();
         if (!(damager instanceof Player pDamager) || !(entity instanceof Player pDamaged) ) return;
-        if (!plugin.getTagPlayerManager().hasPlayer(pDamager) && !plugin.getTagPlayerManager().hasPlayer(pDamaged)) return;
-        if (plugin.getTagPlayerManager().hasPlayer(pDamager) && !plugin.getTagPlayerManager().hasPlayer(pDamaged)) {
+        PlayerData pDataDamager = plugin.getPlayerDataManager().get(pDamager);
+        PlayerData pDataDamaged = plugin.getPlayerDataManager().get(pDamaged);
+        if (!pDataDamager.isInGame() && !pDataDamaged.isInGame()) return;
+        if (pDataDamager.isInGame() && !pDataDamaged.isInGame()) {
             pDamager.sendMessage(ChatColor.RED + "This player is not in your game.");
             event.setCancelled(true);
             return;
         }
-        if (!plugin.getTagPlayerManager().hasPlayer(pDamager) && plugin.getTagPlayerManager().hasPlayer(pDamaged)) {
+        if (!pDataDamager.isInGame() && pDataDamaged.isInGame()) {
             pDamager.sendMessage(ChatColor.RED + "You cannot harm a player who is in a game.");
             event.setCancelled(true);
             return;
         }
-        TagPlayer tpDamager = plugin.getTagPlayerManager().getWrapper(pDamager);
-        TagPlayer tpDamaged = plugin.getTagPlayerManager().getWrapper(pDamaged);
-        if (tpDamager.getGameId() != tpDamaged.getGameId()) {
-            tpDamager.getPlayer().sendMessage(ChatColor.RED + "You cannot tag someone who is not in your game!");
+        if (pDataDamager.getGameId() != pDataDamaged.getGameId()) {
+            pDataDamager.getPlayer().sendMessage(ChatColor.RED + "You cannot tag someone who is not in your game!");
             event.setCancelled(true);
             return;
         }
-        int gameId = tpDamager.getGameId();
-        plugin.getTagGameManager().getGame(gameId).playerHitPlayer(event, tpDamager, tpDamaged);
+        int gameId = pDataDamager.getGameId();
+        plugin.getTagGameManager().getGame(gameId).playerHitPlayer(event, pDataDamager.getUUID(), pDataDamaged.getUUID());
     }
 
 }

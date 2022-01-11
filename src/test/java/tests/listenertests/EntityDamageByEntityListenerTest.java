@@ -6,8 +6,6 @@ import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import io.benlewis.tagminigame.TagPlugin;
 import io.benlewis.tagminigame.game.tag.TagGame;
 import io.benlewis.tagminigame.game.tag.TagPlayer;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.junit.jupiter.api.AfterEach;
@@ -41,10 +39,10 @@ public class EntityDamageByEntityListenerTest {
         PlayerMock attacker = server.addPlayer();
         PlayerMock victim = server.addPlayer();
         TagGame game = plugin.getTagGameManager().createGame();
-        game.addPlayer(attacker);
-        game.addPlayer(victim);
-        TagPlayer tpAttacker = plugin.getTagPlayerManager().getWrapper(attacker);
-        TagPlayer tpVictim = plugin.getTagPlayerManager().getWrapper(victim);
+        game.register(attacker);
+        game.register(victim);
+        TagPlayer tpAttacker = game.get(attacker);
+        TagPlayer tpVictim = game.get(victim);
         tpAttacker.setTagged(true);
         EntityDamageByEntityEvent event = new EntityDamageByEntityEvent(attacker, victim,
                 EntityDamageEvent.DamageCause.CUSTOM, 0.0);

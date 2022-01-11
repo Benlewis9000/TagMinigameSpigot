@@ -1,0 +1,56 @@
+package io.benlewis.tagminigame.game.data;
+
+import io.benlewis.tagminigame.game.api.IPlayerWrapper;
+import org.bukkit.Server;
+import org.bukkit.entity.Player;
+
+import java.util.UUID;
+
+import static java.util.Objects.requireNonNull;
+
+public class PlayerData implements IPlayerWrapper {
+
+    private final Server server;
+    private final UUID playerUuid;
+    private int gameId;
+
+    protected PlayerData(Player player){
+        this.server = player.getServer();
+        this.playerUuid = player.getUniqueId();
+        this.gameId = -1;
+    }
+
+    @Override
+    public Player getPlayer() {
+        return requireNonNull(server.getPlayer(playerUuid), "no Player with UUID " + playerUuid + " is online");
+    }
+
+    @Override
+    public UUID getUUID() {
+        return playerUuid;
+    }
+
+    @Override
+    public int getGameId() {
+        if (!isInGame()){
+            throw new NullPointerException("Player with UUID " + playerUuid + " is not in a game");
+        }
+        return gameId;
+    }
+
+    public void setGameId(int id) {
+        if (id < 0){
+            throw new IllegalArgumentException("a game ID is a positive integer, it cannot be " + id);
+        }
+        this.gameId = id;
+    }
+
+    public boolean isInGame(){
+        return this.gameId >= 0;
+    }
+
+    public void removeGameId(){
+        this.gameId = -1;
+    }
+
+}

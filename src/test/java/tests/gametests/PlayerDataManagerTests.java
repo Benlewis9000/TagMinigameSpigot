@@ -9,7 +9,7 @@ import tests.MockBukkitTests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class TagPlayerManagerTests extends MockBukkitTests {
+public class PlayerDataManagerTests extends MockBukkitTests {
 
     @BeforeEach
     void setUp(){
@@ -24,10 +24,10 @@ public class TagPlayerManagerTests extends MockBukkitTests {
     @Test
     void createAndDestroyGPlayer_ShouldAddRemoveThenThrow() {
         Player p = server.addPlayer();
-        playerManager.createWrapper(p, 0);
-        assertEquals(playerManager.getWrapper(p).getPlayer(), p);
-        playerManager.destroyWrapper(p);
-        assertThrows(NullPointerException.class, () -> playerManager.getWrapper(p) );
+        playerDataManager.register(p);
+        assertEquals(playerDataManager.get(p).getPlayer(), p);
+        playerDataManager.remove(p);
+        assertThrows(NullPointerException.class, () -> playerDataManager.get(p) );
     }
 
 }

@@ -5,7 +5,7 @@ import io.benlewis.tagminigame.commands.CmdJoin;
 import io.benlewis.tagminigame.commands.CmdQuit;
 import io.benlewis.tagminigame.commands.CmdSetTag;
 import io.benlewis.tagminigame.game.tag.TagGameManager;
-import io.benlewis.tagminigame.game.tag.TagPlayerManager;
+import io.benlewis.tagminigame.game.data.PlayerDataManager;
 import io.benlewis.tagminigame.listeners.EntityDamageByEntityListener;
 import io.benlewis.tagminigame.listeners.PlayerQuitEventListener;
 import org.bukkit.permissions.PermissionDefault;
@@ -18,7 +18,6 @@ import org.bukkit.plugin.java.annotation.plugin.Plugin;
 import org.bukkit.plugin.java.annotation.plugin.author.Author;
 
 import java.io.File;
-import java.util.logging.Level;
 
 @Plugin(name="TagPlugin", version="1.0.0")
 @Author("Anarchist")
@@ -33,15 +32,15 @@ import java.util.logging.Level;
 public class TagPlugin extends JavaPlugin {
 
     private final TagGameManager tagGameManager = new TagGameManager(this);
-    private final TagPlayerManager tagPlayerManager = new TagPlayerManager();
+    private final PlayerDataManager playerDataManager = new PlayerDataManager();
     private final boolean debug = true;
 
     public TagGameManager getTagGameManager() {
         return tagGameManager;
     }
 
-    public TagPlayerManager getTagPlayerManager() {
-        return tagPlayerManager;
+    public PlayerDataManager getPlayerDataManager() {
+        return playerDataManager;
     }
 
     // Main class must have no arg constructor

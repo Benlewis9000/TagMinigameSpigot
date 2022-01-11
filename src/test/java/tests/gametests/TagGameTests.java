@@ -31,22 +31,22 @@ public class TagGameTests extends MockBukkitTests {
     @Test
     void gameAddAndRemove_ShouldSucceed(){
         Player p = server.addPlayer();
-        game.addPlayer(p);
-        TagPlayer tp = playerManager.getWrapper(p);
-        assertTrue(game.hasGPlayer(tp));
-        assertTrue(playerManager.hasPlayer(p));
+        assertTrue(playerDataManager.contains(p));
+        TagPlayer tp = game.register(p);
+        assertTrue(game.contains(p));
+        assertTrue(playerDataManager.get(p).isInGame());
         Player presult = tp.getPlayer();
         assertEquals(presult, p);
-        game.removePlayer(tp);
-        assertFalse(game.hasGPlayer(tp));
-        assertFalse(playerManager.hasPlayer(p));
+        game.remove(p);
+        assertFalse(game.contains(p));
+        assertFalse(playerDataManager.get(p).isInGame());
     }
 
     @Test
     void gameAddWhenExists_ShouldThrow(){
         Player p = server.addPlayer();
-        game.addPlayer(p);
-        assertThrows(IllegalArgumentException.class, () -> game.addPlayer(p) );
+        game.register(p);
+        assertThrows(IllegalArgumentException.class, () -> game.register(p) );
     }
 
 }

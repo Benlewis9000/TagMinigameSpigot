@@ -2,7 +2,7 @@ package io.benlewis.tagminigame.game.api;
 
 import java.util.Collection;
 
-public interface IGameManager <T extends IGame<? extends IGPlayer, ? extends IGamePhase>> {
+public interface IGameManager <T extends IGame<? extends IPlayerWrapper, ? extends IGamePhase>> {
 
     /**
      * Get the {@link IGame}s stored in the manager.

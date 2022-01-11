@@ -30,11 +30,12 @@ public class CmdSetTag extends TagCommand {
             return true;
         }
         boolean tagged = Boolean.parseBoolean(args[1]);
-        if (!plugin.getTagPlayerManager().hasPlayer(player)) {
+        if (!plugin.getPlayerDataManager().get(player).isInGame()) {
             sender.sendMessage(ChatColor.RED + "Player " + player.getName() + " is not in a game.");
             return true;
         }
-        TagPlayer tagPlayer = plugin.getTagPlayerManager().getWrapper(player);
+        TagPlayer tagPlayer = plugin.getTagGameManager().getGame(plugin.getPlayerDataManager().get(player).getGameId())
+                .get(player);
         // TODO update to use appropriate tag event, not just set straight here
         tagPlayer.setTagged(tagged);
         sender.sendMessage(ChatColor.GREEN + player.getName() + " has been set as " + (tagged ? "" : "not") + " tagged.");

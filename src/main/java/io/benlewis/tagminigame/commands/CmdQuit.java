@@ -1,6 +1,7 @@
 package io.benlewis.tagminigame.commands;
 
 import io.benlewis.tagminigame.TagPlugin;
+import io.benlewis.tagminigame.game.data.PlayerData;
 import io.benlewis.tagminigame.game.tag.TagGame;
 import io.benlewis.tagminigame.game.tag.TagPlayer;
 import org.bukkit.ChatColor;
@@ -20,13 +21,14 @@ public class CmdQuit extends TagCommand{
             sender.sendMessage(ChatColor.RED + "You must be a player to use this command.");
             return true;
         }
-        if (!plugin.getTagPlayerManager().hasPlayer(player)) {
+        PlayerData playerData = plugin.getPlayerDataManager().get(player);
+        if (playerData.isInGame()) {
             sender.sendMessage(ChatColor.RED + "You are not in a game.");
             return true;
         }
-        TagPlayer tagPlayer = plugin.getTagPlayerManager().getWrapper(player);
-        TagGame game = plugin.getTagGameManager().getGame(tagPlayer.getGameId());
-        game.playerQuit(tagPlayer);
+        int gameId = playerData.getGameId();
+        TagGame game = plugin.getTagGameManager().getGame(gameId);
+        game.playerQuit(player);
         return true;
     }
 }

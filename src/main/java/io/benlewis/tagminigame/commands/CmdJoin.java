@@ -29,7 +29,7 @@ public class CmdJoin extends TagCommand {
         try {
             int gameId = Integer.parseInt(gameIdArg);
             TagGame game = plugin.getTagGameManager().getGame(gameId);
-            game.addPlayer((Player) sender);
+            game.register((Player) sender);
             sender.sendMessage(ChatColor.GREEN + "You have joined game " + gameIdArg + "!");
         }
         catch (NumberFormatException e){
