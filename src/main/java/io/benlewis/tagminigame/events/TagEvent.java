@@ -3,7 +3,7 @@ package io.benlewis.tagminigame.events;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class TagEvent extends Event {
+public abstract class TagEvent extends Event {
 
     private static final HandlerList HANDLERS = new HandlerList();
 
