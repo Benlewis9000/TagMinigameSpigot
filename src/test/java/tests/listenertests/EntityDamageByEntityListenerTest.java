@@ -11,26 +11,23 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import tests.MockBukkitTests;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // NB: Listener is required to check that EntityDamageByEntityListenerTest calls TagPlayerHitTagPlayerEvent under the
 // right conditions. It is NOT to listen to EntityDamageByEntityListenerTest events. These events are constructed here.
-public class EntityDamageByEntityListenerTest {
-
-    private ServerMock server;
-    private TagPlugin plugin;
+public class EntityDamageByEntityListenerTest extends MockBukkitTests {
 
     @BeforeEach
-    public void setUp(){
-        server = MockBukkit.mock();
-        plugin = MockBukkit.load(TagPlugin.class);
+    void setUp(){
+        setUpBukkit();
     }
 
     @AfterEach
-    public void tearDown(){
-        MockBukkit.unmock();
+    void tearDown(){
+        tearDownBukkit();
     }
 
     // TODO will break when game phases introduced
