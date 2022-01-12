@@ -4,7 +4,7 @@ import io.benlewis.tagminigame.commands.CmdCreate;
 import io.benlewis.tagminigame.commands.CmdJoin;
 import io.benlewis.tagminigame.commands.CmdQuit;
 import io.benlewis.tagminigame.commands.CmdSetTag;
-import io.benlewis.tagminigame.game.data.PlayerDataManager;
+import io.benlewis.tagminigame.game.data.DataPlayerManager;
 import io.benlewis.tagminigame.game.tag.TagGameManager;
 import io.benlewis.tagminigame.listeners.EntityDamageByEntityListener;
 import io.benlewis.tagminigame.listeners.PlayerJoinEventListener;
@@ -32,12 +32,12 @@ import java.io.File;
 @Permission(name="tag.settag", desc="Can forcibly set a players tagged status", defaultValue= PermissionDefault.OP)
 public class TagPlugin extends JavaPlugin {
 
-    private final PlayerDataManager playerDataManager = new PlayerDataManager();
+    private final DataPlayerManager dataPlayerManager = new DataPlayerManager();
     private final TagGameManager tagGameManager = new TagGameManager(this);
     private final boolean debug = true;
 
-    public PlayerDataManager getPlayerDataManager() {
-        return playerDataManager;
+    public DataPlayerManager getPlayerDataManager() {
+        return dataPlayerManager;
     }
 
     public TagGameManager getTagGameManager() {
@@ -59,9 +59,9 @@ public class TagPlugin extends JavaPlugin {
         this.getCommand("quit").setExecutor(new CmdQuit(this));
         this.getCommand("settag").setExecutor(new CmdSetTag(this));
 
-        this.getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(playerDataManager, tagGameManager), this);
-        this.getServer().getPluginManager().registerEvents(new PlayerJoinEventListener(playerDataManager), this);
-        this.getServer().getPluginManager().registerEvents(new PlayerQuitEventListener(playerDataManager, tagGameManager), this);
+        this.getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(dataPlayerManager, tagGameManager), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerJoinEventListener(dataPlayerManager), this);
+        this.getServer().getPluginManager().registerEvents(new PlayerQuitEventListener(dataPlayerManager, tagGameManager), this);
     }
 
     @Override

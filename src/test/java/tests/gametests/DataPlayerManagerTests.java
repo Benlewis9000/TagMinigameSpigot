@@ -9,7 +9,7 @@ import tests.MockBukkitTests;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class PlayerDataManagerTests extends MockBukkitTests {
+public class DataPlayerManagerTests extends MockBukkitTests {
 
     @BeforeEach
     void setUp(){
@@ -24,9 +24,9 @@ public class PlayerDataManagerTests extends MockBukkitTests {
     @Test
     void createAndDestroyGPlayer_ShouldAddRemoveThenThrow() {
         Player p = server.addPlayer();
-        assertEquals(playerDataManager.get(p).getPlayer(), p);
-        playerDataManager.remove(p);
-        assertThrows(NullPointerException.class, () -> playerDataManager.get(p) );
+        assertEquals(dataPlayerManager.get(p).getPlayer(), p);
+        dataPlayerManager.remove(p);
+        assertThrows(NullPointerException.class, () -> dataPlayerManager.get(p) );
     }
 
 }

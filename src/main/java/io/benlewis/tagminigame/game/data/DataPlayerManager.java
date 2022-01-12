@@ -8,16 +8,16 @@ import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
-public class PlayerDataManager implements IPlayerManager<PlayerData> {
+public class DataPlayerManager implements IPlayerManager<DataPlayer> {
 
-    private final HashMap<UUID, PlayerData> players = new HashMap<>();
+    private final HashMap<UUID, DataPlayer> players = new HashMap<>();
 
     @Override
-    public PlayerData register(Player player) {
+    public DataPlayer register(Player player) {
         if (contains(player)){
             throw new IllegalArgumentException("a wrapper for Player " + player.getName() + " already exists");
         }
-        PlayerData tagPlayer = new PlayerData(player);
+        DataPlayer tagPlayer = new DataPlayer(player);
         players.put(player.getUniqueId(), tagPlayer);
         return tagPlayer;
     }
@@ -41,11 +41,11 @@ public class PlayerDataManager implements IPlayerManager<PlayerData> {
     }
 
     @Override
-    public PlayerData get(Player player) {
+    public DataPlayer get(Player player) {
         return get(player.getUniqueId());
     }
 
-    public PlayerData get(UUID uuid){
+    public DataPlayer get(UUID uuid){
         return requireNonNull(players.get(uuid), "a PlayerData wrapper for UUID" + uuid
                 + " was not found");
     }

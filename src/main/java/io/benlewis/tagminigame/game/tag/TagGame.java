@@ -2,7 +2,7 @@ package io.benlewis.tagminigame.game.tag;
 
 import io.benlewis.tagminigame.TagPlugin;
 import io.benlewis.tagminigame.game.api.IGame;
-import io.benlewis.tagminigame.game.data.PlayerDataManager;
+import io.benlewis.tagminigame.game.data.DataPlayerManager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -34,15 +34,15 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
 
     @Override
     public TagPlayer register(Player player) {
-        PlayerDataManager playerDataManager = plugin.getPlayerDataManager();
-        if (!playerDataManager.contains(player)){
+        DataPlayerManager dataPlayerManager = plugin.getPlayerDataManager();
+        if (!dataPlayerManager.contains(player)){
             throw new IllegalArgumentException("there is no data wrapper for Player " + player.getName()  +
                     " [" + player.getUniqueId() + "]");
         }
-        if (playerDataManager.get(player).isInGame()) {
+        if (dataPlayerManager.get(player).isInGame()) {
             throw new IllegalArgumentException("player " + player.getName() + " is already in a game");
         }
-        playerDataManager.get(player).setGameId(getId());
+        dataPlayerManager.get(player).setGameId(getId());
         TagPlayer tagPlayer = new TagPlayer(player, this.getId());
         players.put(player.getUniqueId(), tagPlayer);
         return tagPlayer;
@@ -99,6 +99,10 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         // TODO
     }
 
+    /**
+     * Safely remove a player from the game.
+     * @param player
+     */
     public void playerQuit(Player player){
         if (contains(player)) {
             remove(player);

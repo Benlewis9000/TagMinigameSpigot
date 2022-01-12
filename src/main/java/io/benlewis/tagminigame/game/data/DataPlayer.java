@@ -8,13 +8,13 @@ import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
-public class PlayerData implements IPlayerWrapper {
+public class DataPlayer implements IPlayerWrapper {
 
     private final Server server;
     private final UUID playerUuid;
     private int gameId;
 
-    protected PlayerData(Player player){
+    protected DataPlayer(Player player){
         this.server = player.getServer();
         this.playerUuid = player.getUniqueId();
         this.gameId = -1;

@@ -1,5 +1,6 @@
 package tests.gametests;
 
+import io.benlewis.tagminigame.game.data.DataPlayer;
 import io.benlewis.tagminigame.game.tag.TagGame;
 import io.benlewis.tagminigame.game.tag.TagPlayer;
 import org.bukkit.entity.Player;
@@ -29,24 +30,44 @@ public class TagGameTests extends MockBukkitTests {
     }
 
     @Test
-    void gameAddAndRemove_ShouldSucceed(){
+    void gameRegisterAndRemovePlayer_ShouldSucceed(){
         Player p = server.addPlayer();
-        assertTrue(playerDataManager.contains(p));
+        assertTrue(dataPlayerManager.contains(p));
         TagPlayer tp = game.register(p);
         assertTrue(game.contains(p));
-        assertTrue(playerDataManager.get(p).isInGame());
+        assertTrue(dataPlayerManager.get(p).isInGame());
         Player presult = tp.getPlayer();
         assertEquals(presult, p);
         game.remove(p);
         assertFalse(game.contains(p));
-        assertFalse(playerDataManager.get(p).isInGame());
+        assertFalse(dataPlayerManager.get(p).isInGame());
     }
 
     @Test
-    void gameAddWhenExists_ShouldThrow(){
+    void gameRegisterPlayerWhenExists_ShouldThrow(){
         Player p = server.addPlayer();
         game.register(p);
         assertThrows(IllegalArgumentException.class, () -> game.register(p) );
+    }
+
+    @Test
+    void gameJoinWhenInOtherGame_ShouldThrow(){
+        Player p = server.addPlayer();
+        game.register(p);
+        TagGame game2 = gameManager.createGame();
+        assertThrows(IllegalArgumentException.class, () -> game2.register(p));
+    }
+
+    @Test
+    void gameQuit_ShouldRemovePlayerAndUpdateWrappers(){
+        Player p = server.addPlayer();
+        game.register(p);
+        assertTrue(game.contains(p));
+        game.playerQuit(p);
+        assertFalse(game.contains(p));
+        DataPlayer dp = dataPlayerManager.get(p);
+        assertFalse(dp.isInGame());
+        assertThrows(NullPointerException.class, dp::getGameId);
     }
 
 }
