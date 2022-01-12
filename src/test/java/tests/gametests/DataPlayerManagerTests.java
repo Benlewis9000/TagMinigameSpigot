@@ -22,7 +22,8 @@ public class DataPlayerManagerTests extends MockBukkitTests {
     }
 
     @Test
-    void createAndDestroyGPlayer_ShouldAddRemoveThenThrow() {
+    void registerAndRemove_ShouldAddRemoveThenThrow() {
+        // Implicitly registers player through PlayerJoinEventListener
         Player p = server.addPlayer();
         assertEquals(dataPlayerManager.get(p).getPlayer(), p);
         dataPlayerManager.remove(p);
