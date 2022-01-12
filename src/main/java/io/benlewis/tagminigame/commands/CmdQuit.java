@@ -27,7 +27,8 @@ public class CmdQuit extends TagCommand{
         }
         int gameId = dataPlayer.getGameId();
         TagGame game = plugin.getTagGameManager().getGame(gameId);
-        game.playerQuit(player);
+        game.remove(player);
+        player.sendMessage(ChatColor.GREEN + "You have quit game " + gameId + ".");
         return true;
     }
 }

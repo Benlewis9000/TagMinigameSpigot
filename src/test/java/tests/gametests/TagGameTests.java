@@ -63,7 +63,7 @@ public class TagGameTests extends MockBukkitTests {
         Player p = server.addPlayer();
         game.register(p);
         assertTrue(game.contains(p));
-        game.playerQuit(p);
+        game.remove(p);
         assertFalse(game.contains(p));
         DataPlayer dp = dataPlayerManager.get(p);
         assertFalse(dp.isInGame());

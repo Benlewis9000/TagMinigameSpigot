@@ -18,7 +18,7 @@ public record PlayerQuitEventListener(DataPlayerManager dataPlayerManager, TagGa
         if (!dataPlayerManager.get(player).isInGame()) return;
         int gameId = dataPlayerManager.get(player).getGameId();
         TagGame game = tagGameManager.getGame(gameId);
-        game.playerQuit(player);
+        game.remove(player);
     }
 
 }

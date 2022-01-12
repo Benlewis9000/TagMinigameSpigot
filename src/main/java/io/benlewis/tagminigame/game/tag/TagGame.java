@@ -99,17 +99,6 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         // TODO
     }
 
-    /**
-     * Safely remove a player from the game.
-     * @param player
-     */
-    public void playerQuit(Player player){
-        if (contains(player)) {
-            remove(player);
-            player.sendMessage(ChatColor.GREEN + "You have quit game " + getId() + ".");
-        }
-    }
-
     public void playerHitPlayer(EntityDamageByEntityEvent event, UUID attackerUuid, UUID victimUuid){
         TagPlayer attacker = get(attackerUuid);
         TagPlayer victim = get(victimUuid);
