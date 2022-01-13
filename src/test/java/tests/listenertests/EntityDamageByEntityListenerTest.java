@@ -1,9 +1,6 @@
 package tests.listenertests;
 
-import be.seeseemelk.mockbukkit.MockBukkit;
-import be.seeseemelk.mockbukkit.ServerMock;
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import io.benlewis.tagminigame.TagPlugin;
 import io.benlewis.tagminigame.game.tag.TagGame;
 import io.benlewis.tagminigame.game.tag.TagPlayer;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -35,7 +32,7 @@ public class EntityDamageByEntityListenerTest extends MockBukkitTests {
     public void EventHandle_ShouldTagVictim(){
         PlayerMock attacker = server.addPlayer();
         PlayerMock victim = server.addPlayer();
-        TagGame game = plugin.getTagGameManager().createGame();
+        TagGame game = plugin.getTagGameManager().createGame(Integer.MAX_VALUE, Integer.MAX_VALUE);
         game.register(attacker);
         game.register(victim);
         TagPlayer tpAttacker = game.get(attacker);

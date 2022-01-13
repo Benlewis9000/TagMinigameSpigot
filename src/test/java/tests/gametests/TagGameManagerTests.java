@@ -27,14 +27,14 @@ public class TagGameManagerTests extends MockBukkitTests {
     @Test
     void createGame_ShouldIncrementGameId(){
         TagGameManager manager = new TagGameManager(plugin);
-        manager.createGame();
-        assertEquals(1, manager.createGame().getId());
+        manager.createGame(1,1);
+        assertEquals(1, manager.createGame(1,1).getId());
     }
 
     @Test
     void addAndRemoveGame_ShouldAddRemoveThenThrow() {
         TagGameManager manager = new TagGameManager(plugin);
-        TagGame game = manager.createGame();
+        TagGame game = manager.createGame(1,1);
         assertEquals(manager.getGame(game.getId()), game);
         manager.deleteGame(0);
         assertThrows(NoSuchElementException.class, () ->{

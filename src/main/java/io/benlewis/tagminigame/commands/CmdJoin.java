@@ -33,7 +33,7 @@ public class CmdJoin extends TagCommand {
             sender.sendMessage(ChatColor.GREEN + "You have joined game " + gameIdArg + "!");
         }
         catch (NumberFormatException e){
-            sender.sendMessage(ChatColor.RED + "The game ID must be a valid integer.");
+            sender.sendMessage(ChatColor.RED + "Game ID \"" + gameIdArg + "\" is not a valid integer.");
         }
         catch (NoSuchElementException e){
             sender.sendMessage(ChatColor.RED + "No game with an ID of " + gameIdArg + " was found.");

@@ -23,7 +23,7 @@ public interface IGameManager <T extends IGame<? extends IPlayerWrapper, ? exten
      * already in use.
      * @return game created
      */
-    T createGame();
+    T createGame(int minNoPlayers, int maxNoPlayers);
 
     /**
      * Delete a game, removing it from the manager (if present).

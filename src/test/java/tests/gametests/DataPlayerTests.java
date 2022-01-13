@@ -1,7 +1,6 @@
 package tests.gametests;
 
 import io.benlewis.tagminigame.game.data.DataPlayer;
-import io.benlewis.tagminigame.game.tag.TagGame;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;

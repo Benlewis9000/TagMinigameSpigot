@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 
 public abstract class TagCommand implements CommandExecutor {
 
-    TagPlugin plugin;
+    final TagPlugin plugin;
 
     public TagCommand(TagPlugin plugin){
         this.plugin = plugin;

@@ -20,8 +20,4 @@ public interface IGame<T extends IPlayerWrapper, V extends IGamePhase> extends I
      */
     void setPhase(V phase);
 
-    /**
-     * Close a game.
-     */
-    void close();
 }

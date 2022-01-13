@@ -33,21 +33,18 @@ public class TagGameManager implements IGameManager<TagGame> {
     }
 
     @Override
-    public TagGame createGame() {
+    public TagGame createGame(int minNoPlayers, int maxNoPlayers) {
         int id = nextGameId++;
         if (games.containsKey(id)){
             throw new IllegalArgumentException("ID " + id + " is already being used by another game");
         }
-        TagGame game = new TagGame(plugin, id);
+        TagGame game = new TagGame(plugin, id, minNoPlayers, maxNoPlayers);
         games.put(game.getId(), game);
         return game;
     }
 
     @Override
     public void deleteGame(int id) {
-        if (games.containsKey(id)) {
-            games.get(id).close();
-            games.remove(id);
-        }
+        games.remove(id);
     }
 }

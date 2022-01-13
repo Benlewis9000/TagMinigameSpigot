@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import static io.benlewis.tagminigame.game.tag.TagGamePhase.LOBBY;
 import static java.util.Objects.requireNonNull;
 
 public class TagGame implements IGame<TagPlayer, TagGamePhase> {
@@ -18,13 +19,17 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
     private final TagPlugin plugin;
     private final int id;
     private final Map<UUID, TagPlayer> players;
+    public final int MAX_PLAYERS;
+    public final int MIN_PLAYERS;
     private TagGamePhase phase;
 
-    protected TagGame(TagPlugin plugin, int id){
+    protected TagGame(TagPlugin plugin, int id, int maxPlayers, int minPlayers){
         this.plugin = plugin;
         this.id = id;
+        this.MAX_PLAYERS = maxPlayers;
+        this.MIN_PLAYERS = minPlayers;
         players = new HashMap<>();
-        phase = TagGamePhase.LOBBY;
+        phase = LOBBY;
     }
 
     @Override
@@ -34,6 +39,9 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
 
     @Override
     public TagPlayer register(Player player) {
+        if (getPhase() != LOBBY){
+            throw new IllegalStateException("players cannot be registered outside of the LOBBY phase");
+        }
         DataPlayerManager dataPlayerManager = plugin.getPlayerDataManager();
         if (!dataPlayerManager.contains(player)){
             throw new IllegalArgumentException("there is no data wrapper for Player " + player.getName()  +
@@ -94,12 +102,11 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         // TODO
     }
 
-    @Override
-    public void close() {
-        // TODO
-    }
-
     public void playerHitPlayer(EntityDamageByEntityEvent event, UUID attackerUuid, UUID victimUuid){
+        if (getPhase() != TagGamePhase.GAME) {
+            event.setCancelled(true);
+            return;
+        }
         TagPlayer attacker = get(attackerUuid);
         TagPlayer victim = get(victimUuid);
         if (!attacker.isTagged()) {
@@ -116,11 +123,11 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         }
         plugin.debug("victim is not tagged");
         plugin.debug("doing placeholder tag code");
-        event.setDamage(0.0);
-        playerTagPlayer(attacker, victim);
+        playerTagPlayer(event, attacker, victim);
     }
 
-    public void playerTagPlayer(TagPlayer attacker, TagPlayer victim){
+    public void playerTagPlayer(EntityDamageByEntityEvent event, TagPlayer attacker, TagPlayer victim){
+        event.setDamage(0.0);
         attacker.setTagged(false);
         attacker.getPlayer().sendMessage(ChatColor.GREEN + "You just tagged "
                 + victim.getPlayer().getDisplayName() + "!");

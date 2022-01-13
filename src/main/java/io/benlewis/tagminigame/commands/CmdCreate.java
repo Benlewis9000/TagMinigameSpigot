@@ -18,8 +18,29 @@ public class CmdCreate extends TagCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        if (args.length < 2) {
+            sender.sendMessage(ChatColor.RED + "Insufficient args: /create <minNoPlayers> <maxNoPlayers>");
+        }
         try {
-            TagGame game = plugin.getTagGameManager().createGame();
+            int minNoPlayers;
+            int maxNoPlayers;
+            try {
+                minNoPlayers = Integer.parseInt(args[0]);
+            }
+            catch (NumberFormatException e){
+                sender.sendMessage(ChatColor.RED + "Min number of players may not be \"" + args[0] + "\". " +
+                        "Please use a valid integer.");
+                return true;
+            }
+            try {
+                maxNoPlayers = Integer.parseInt(args[0]);
+            }
+            catch (NumberFormatException e){
+                sender.sendMessage(ChatColor.RED + "Max number of players may not be \"" + args[0] + "\". " +
+                        "Please use a valid integer.");
+                return true;
+            }
+            TagGame game = plugin.getTagGameManager().createGame(minNoPlayers, maxNoPlayers);
             sender.sendMessage(ChatColor.GREEN + "Game created with ID " + game.getId() + "!");
         }
         catch (Exception e){
