@@ -27,6 +27,11 @@ public class TagGameManager implements IGameManager<TagGame> {
     }
 
     @Override
+    public boolean hasGame(int id) {
+        return games.containsKey(id);
+    }
+
+    @Override
     public TagGame getGame(int id) {
         if (games.containsKey(id)) return games.get(id);
         else throw new NoSuchElementException("no game with ID of " + id + "found");

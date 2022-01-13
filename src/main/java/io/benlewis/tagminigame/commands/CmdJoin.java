@@ -17,7 +17,7 @@ public class CmdJoin extends TagCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             sender.sendMessage(ChatColor.RED + "You must be a player to use this command.");
             return true;
         }
@@ -26,20 +26,33 @@ public class CmdJoin extends TagCommand {
             return true;
         }
         String gameIdArg = args[0];
+        int gameId;
         try {
-            int gameId = Integer.parseInt(gameIdArg);
-            TagGame game = plugin.getTagGameManager().getGame(gameId);
-            game.register((Player) sender);
-            sender.sendMessage(ChatColor.GREEN + "You have joined game " + gameIdArg + "!");
+            gameId = Integer.parseInt(gameIdArg);
         }
         catch (NumberFormatException e){
             sender.sendMessage(ChatColor.RED + "Game ID \"" + gameIdArg + "\" is not a valid integer.");
+            return true;
         }
-        catch (NoSuchElementException e){
-            sender.sendMessage(ChatColor.RED + "No game with an ID of " + gameIdArg + " was found.");
-        }
-        catch (IllegalArgumentException e){
+        if (plugin.getPlayerDataManager().get(player).isInGame()){
             sender.sendMessage(ChatColor.RED + "You are already in a game.");
+            return true;
+        }
+        if (!plugin.getTagGameManager().hasGame(gameId)) {
+            sender.sendMessage(ChatColor.RED + "No game with an ID of " + gameIdArg + " was found.");
+            return true;
+        }
+        TagGame game = plugin.getTagGameManager().getGame(gameId);
+        if (game.isFull()){
+            sender.sendMessage(ChatColor.RED + "This game is full.");
+            return true;
+        }
+        try {
+            game.register((Player) sender);
+        }
+        catch(Exception e){
+            sender.sendMessage(ChatColor.DARK_RED + "Error: " + ChatColor.RED + " Failed to join game, " + e.getMessage());
+            e.printStackTrace();
         }
         return true;
     }

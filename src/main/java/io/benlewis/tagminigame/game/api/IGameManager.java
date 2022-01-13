@@ -5,10 +5,17 @@ import java.util.Collection;
 public interface IGameManager <T extends IGame<? extends IPlayerWrapper, ? extends IGamePhase>> {
 
     /**
-     * Get the {@link IGame}s stored in the manager.
+     * Get the {@link IGame}s stored in this manager.
      * @return the games
      */
     Collection<T> getGames();
+
+    /**
+     * True if a game with the corresponding ID exists in this manager.
+     * @param id of game
+     * @return true if game exists
+     */
+    boolean hasGame(int id);
 
     /**
      * Get the {@link IGame} with the given ID. Throws {@link java.util.NoSuchElementException} if no games with that ID

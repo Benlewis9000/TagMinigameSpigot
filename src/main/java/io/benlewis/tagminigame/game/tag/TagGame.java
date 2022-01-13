@@ -19,15 +19,15 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
     private final TagPlugin plugin;
     private final int id;
     private final Map<UUID, TagPlayer> players;
-    public final int MAX_PLAYERS;
-    public final int MIN_PLAYERS;
+    public final int maxPlayers;
+    public final int minPlayers;
     private TagGamePhase phase;
 
     protected TagGame(TagPlugin plugin, int id, int maxPlayers, int minPlayers){
         this.plugin = plugin;
         this.id = id;
-        this.MAX_PLAYERS = maxPlayers;
-        this.MIN_PLAYERS = minPlayers;
+        this.maxPlayers = maxPlayers;
+        this.minPlayers = minPlayers;
         players = new HashMap<>();
         phase = LOBBY;
     }
@@ -38,9 +38,27 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
     }
 
     @Override
+    public int getMinPlayers() {
+        return minPlayers;
+    }
+
+    @Override
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    @Override
+    public boolean isFull() {
+        return players.size() >= maxPlayers;
+    }
+
+    @Override
     public TagPlayer register(Player player) {
         if (getPhase() != LOBBY){
             throw new IllegalStateException("players cannot be registered outside of the LOBBY phase");
+        }
+        if (players.size() >= maxPlayers){
+            throw new IllegalStateException("maximum player limit has already been met");
         }
         DataPlayerManager dataPlayerManager = plugin.getPlayerDataManager();
         if (!dataPlayerManager.contains(player)){
@@ -53,6 +71,7 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         dataPlayerManager.get(player).setGameId(getId());
         TagPlayer tagPlayer = new TagPlayer(player, this.getId());
         players.put(player.getUniqueId(), tagPlayer);
+        player.sendMessage(ChatColor.GREEN + "You have joined game " + getId() + "!");
         return tagPlayer;
     }
 
