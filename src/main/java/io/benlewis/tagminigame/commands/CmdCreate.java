@@ -20,6 +20,7 @@ public class CmdCreate extends TagCommand {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 2) {
             sender.sendMessage(ChatColor.RED + "Insufficient args: /create <minNoPlayers> <maxNoPlayers>");
+            return true;
         }
         try {
             int minNoPlayers;
@@ -33,13 +34,14 @@ public class CmdCreate extends TagCommand {
                 return true;
             }
             try {
-                maxNoPlayers = Integer.parseInt(args[0]);
+                maxNoPlayers = Integer.parseInt(args[1]);
             }
             catch (NumberFormatException e){
-                sender.sendMessage(ChatColor.RED + "Max number of players may not be \"" + args[0] + "\". " +
+                sender.sendMessage(ChatColor.RED + "Max number of players may not be \"" + args[1] + "\". " +
                         "Please use a valid integer.");
                 return true;
             }
+            // TODO: Ensure min < max players
             TagGame game = plugin.getTagGameManager().createGame(minNoPlayers, maxNoPlayers);
             sender.sendMessage(ChatColor.GREEN + "Game created with ID " + game.getId() + "!");
         }
