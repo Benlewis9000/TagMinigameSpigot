@@ -2,6 +2,7 @@ package tests.listenertests;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import io.benlewis.tagminigame.game.tag.TagGame;
+import io.benlewis.tagminigame.game.tag.TagGamePhase;
 import io.benlewis.tagminigame.game.tag.TagPlayer;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -27,7 +28,6 @@ public class EntityDamageByEntityListenerTest extends MockBukkitTests {
         tearDownBukkit();
     }
 
-    // TODO will break when game phases introduced
     @Test
     public void EventHandle_ShouldTagVictim(){
         PlayerMock attacker = server.addPlayer();
@@ -35,6 +35,7 @@ public class EntityDamageByEntityListenerTest extends MockBukkitTests {
         TagGame game = plugin.getTagGameManager().createGame(Integer.MAX_VALUE, Integer.MAX_VALUE);
         game.register(attacker);
         game.register(victim);
+        game.setPhase(TagGamePhase.GAME);
         TagPlayer tpAttacker = game.get(attacker);
         TagPlayer tpVictim = game.get(victim);
         tpAttacker.setTagged(true);
