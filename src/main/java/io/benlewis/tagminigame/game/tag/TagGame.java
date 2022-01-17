@@ -128,25 +128,21 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         }
         TagPlayer attacker = get(attackerUuid);
         TagPlayer victim = get(victimUuid);
+        event.setDamage(0.0);
         if (!attacker.isTagged()) {
-            plugin.debug("event cancelled");
-            event.setCancelled(true);
             return;
         }
-        plugin.debug("attacker is tagged");
-        if (victim.isTagged()) {
+        if (victim.isTagged()){
             attacker.getPlayer().sendMessage(ChatColor.RED + victim.getPlayer().getDisplayName() +
                     " is already tagged!");
-            event.setCancelled(true);
-            return;
         }
-        plugin.debug("victim is not tagged");
-        plugin.debug("doing placeholder tag code");
-        playerTagPlayer(event, attacker, victim);
+        else {
+            plugin.debug("doing placeholder tag code");
+            playerTagPlayer(attacker, victim);
+        }
     }
 
-    public void playerTagPlayer(EntityDamageByEntityEvent event, TagPlayer attacker, TagPlayer victim){
-        event.setDamage(0.0);
+    public void playerTagPlayer(TagPlayer attacker, TagPlayer victim){
         attacker.setTagged(false);
         attacker.getPlayer().sendMessage(ChatColor.GREEN + "You just tagged "
                 + victim.getPlayer().getDisplayName() + "!");
