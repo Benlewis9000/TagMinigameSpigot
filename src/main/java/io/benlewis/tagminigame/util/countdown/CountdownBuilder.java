@@ -1,7 +1,6 @@
 package io.benlewis.tagminigame.util.countdown;
 
 import io.benlewis.tagminigame.TagPlugin;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.function.Consumer;
 

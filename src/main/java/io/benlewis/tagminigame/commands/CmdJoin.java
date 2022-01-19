@@ -8,8 +8,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.NoSuchElementException;
-
 public class CmdJoin extends TagCommand {
 
     public CmdJoin(TagPlugin plugin) {

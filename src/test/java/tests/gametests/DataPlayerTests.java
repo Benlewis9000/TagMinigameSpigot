@@ -2,8 +2,6 @@ package tests.gametests;
 
 import io.benlewis.tagminigame.game.data.DataPlayer;
 import org.bukkit.entity.Player;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tests.MockBukkitTests;
 

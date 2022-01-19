@@ -6,8 +6,6 @@ import io.benlewis.tagminigame.game.tag.TagGamePhase;
 import io.benlewis.tagminigame.game.tag.TagPlayer;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tests.MockBukkitTests;
 

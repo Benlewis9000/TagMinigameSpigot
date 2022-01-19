@@ -3,8 +3,6 @@ package tests.listenertests;
 import io.benlewis.tagminigame.game.tag.TagGame;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tests.MockBukkitTests;
 
