@@ -62,6 +62,8 @@ public class TagPlugin extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new EntityDamageByEntityListener(dataPlayerManager, tagGameManager), this);
         this.getServer().getPluginManager().registerEvents(new PlayerJoinEventListener(dataPlayerManager), this);
         this.getServer().getPluginManager().registerEvents(new PlayerQuitEventListener(dataPlayerManager, tagGameManager), this);
+
+        getServer().getOnlinePlayers().forEach(getPlayerDataManager()::register);
     }
 
     @Override
