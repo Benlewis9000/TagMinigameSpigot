@@ -3,14 +3,19 @@ package io.benlewis.tagminigame.game.tag;
 import io.benlewis.tagminigame.TagPlugin;
 import io.benlewis.tagminigame.game.api.IGame;
 import io.benlewis.tagminigame.game.data.DataPlayerManager;
+import io.benlewis.tagminigame.util.countdown.Countdown;
+import io.benlewis.tagminigame.util.countdown.CountdownBuilder;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
+import javax.swing.text.html.Option;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
+import static io.benlewis.tagminigame.game.tag.TagGamePhase.GAME;
 import static io.benlewis.tagminigame.game.tag.TagGamePhase.LOBBY;
 import static java.util.Objects.requireNonNull;
 
@@ -19,17 +24,22 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
     private final TagPlugin plugin;
     private final int id;
     private final Map<UUID, TagPlayer> players;
-    public final int maxPlayers;
-    public final int minPlayers;
+    private final int maxPlayers;
+    private final int minPlayers;
+    private final int countdownTimeSeconds;
     private TagGamePhase phase;
+    private Countdown countdown;
 
-    protected TagGame(TagPlugin plugin, int id, int maxPlayers, int minPlayers){
+    protected TagGame(TagPlugin plugin, int id, int minPlayers, int maxPlayers){
         this.plugin = plugin;
         this.id = id;
-        this.maxPlayers = maxPlayers;
+        // TODO: Have these be part of some options/config
         this.minPlayers = minPlayers;
+        this.maxPlayers = maxPlayers;
+        this.countdownTimeSeconds = 10;
         players = new HashMap<>();
         phase = LOBBY;
+        countdown = null;
     }
 
     @Override
@@ -71,6 +81,9 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         dataPlayerManager.get(player).setGameId(getId());
         TagPlayer tagPlayer = new TagPlayer(player, this.getId());
         players.put(player.getUniqueId(), tagPlayer);
+        if (players.size() >= minPlayers){
+            startCountdown();
+        }
         player.sendMessage(ChatColor.GREEN + "You have joined game " + getId() + "!");
         return tagPlayer;
     }
@@ -84,6 +97,9 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
     public void remove(UUID uuid) {
         players.remove(uuid);
         plugin.getPlayerDataManager().get(uuid).removeGameId();
+        if (phase == LOBBY && players.size() < minPlayers) {
+            cancelCountdown();
+        }
     }
 
     @Override
@@ -117,8 +133,46 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         this.phase = phase;
     }
 
-    public void start(){
-        // TODO
+    public void startGame(){
+        phase = GAME;
+    }
+
+    private void startCountdown() {
+        if (phase != LOBBY) {
+            throw new IllegalStateException("tried to start lobby countdown outside of lobby");
+        }
+        if (countdown != null) {
+            throw new IllegalStateException("tried to start lobby countdown when one already in progress");
+        }
+        countdown = new CountdownBuilder(plugin, countdownTimeSeconds * 20L, 20)
+                .startTask(() -> players.forEach((k, v) -> v.getPlayer().sendMessage(
+                        ChatColor.GREEN + "Minimum players reached! Game start in " + countdownTimeSeconds
+                                + "s!"))
+                )
+                .intervalTask((c) -> {
+                            if (c.getRemainingTicks() % (20 * 10) == 0
+                                    || c.getRemainingTicks() == 20 * 5
+                                    || c.getRemainingTicks() == 20 * 3
+                                    || c.getRemainingTicks() == 20 * 2
+                                    || c.getRemainingTicks() == 20) {
+                                players.forEach((k, v) -> v.getPlayer().sendMessage(
+                                        ChatColor.YELLOW + "Game starting in " + c.getRemainingTicks() / 20L
+                                                + "s!"));
+                            }
+                        }
+                )
+                .endTask(this::startGame)
+                .cancelTask(() -> players.forEach((k, v) -> v.getPlayer().sendMessage(
+                        ChatColor.RED + "Not enough players to start the game! Countdown cancelled."))
+                )
+                .start();
+    }
+
+    private void cancelCountdown(){
+        if (countdown != null){
+            countdown.cancel();
+            countdown = null;
+        }
     }
 
     public void playerHitPlayer(EntityDamageByEntityEvent event, UUID attackerUuid, UUID victimUuid){
