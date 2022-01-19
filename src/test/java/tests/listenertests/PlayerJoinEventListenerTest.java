@@ -10,16 +10,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PlayerJoinEventListenerTest extends MockBukkitTests {
 
-    @BeforeEach
-    void setUp(){
-        setUpBukkit();
-    }
-
-    @AfterEach
-    void tearDown(){
-        tearDownBukkit();
-    }
-
     @Test
     void EventHandle_ShouldAddPlayerToDataPlayerManager(){
         Player p = server.addPlayer();

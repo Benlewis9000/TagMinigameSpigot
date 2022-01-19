@@ -13,16 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DataPlayerTests extends MockBukkitTests {
 
-    @BeforeEach
-    void setUp(){
-        setUpBukkit();
-    }
-
-    @AfterEach
-    void tearDown(){
-        tearDownBukkit();
-    }
-
     @Test
     void gameIdTests(){
         Player p = server.addPlayer();

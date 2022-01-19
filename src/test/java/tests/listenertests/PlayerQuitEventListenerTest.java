@@ -13,16 +13,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PlayerQuitEventListenerTest extends MockBukkitTests {
 
-    @BeforeEach
-    void setUp(){
-        setUpBukkit();
-    }
-
-    @AfterEach
-    void tearDown(){
-        tearDownBukkit();
-    }
-
     @Test
     void EventHandle_ShouldRemovePlayerFromAnyGame(){
         Player p = server.addPlayer();

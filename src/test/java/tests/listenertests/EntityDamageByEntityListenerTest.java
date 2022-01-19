@@ -18,16 +18,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 // right conditions. It is NOT to listen to EntityDamageByEntityListenerTest events. These events are constructed here.
 public class EntityDamageByEntityListenerTest extends MockBukkitTests {
 
-    @BeforeEach
-    void setUp(){
-        setUpBukkit();
-    }
-
-    @AfterEach
-    void tearDown(){
-        tearDownBukkit();
-    }
-
     @Test
     public void EventHandle_ShouldTagVictim(){
         PlayerMock attacker = server.addPlayer();

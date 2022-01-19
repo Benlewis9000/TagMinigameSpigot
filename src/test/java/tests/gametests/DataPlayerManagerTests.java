@@ -11,16 +11,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DataPlayerManagerTests extends MockBukkitTests {
 
-    @BeforeEach
-    void setUp(){
-        setUpBukkit();
-    }
-
-    @AfterEach
-    void tearDown(){
-        tearDownBukkit();
-    }
-
     @Test
     void registerAndRemove_ShouldAddRemoveThenThrow() {
         // Implicitly registers player through PlayerJoinEventListener

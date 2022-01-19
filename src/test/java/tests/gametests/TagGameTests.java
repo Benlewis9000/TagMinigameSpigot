@@ -22,16 +22,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TagGameTests extends MockBukkitTests {
 
-    @BeforeEach
-    void setUp(){
-        setUpBukkit();
-    }
-
-    @AfterEach
-    public void tearDown(){
-        tearDownBukkit();
-    }
-
     @Test
     void gameRegisterAndRemovePlayer_ShouldSucceed(){
         TagGame game = gameManager.createGame(Integer.MAX_VALUE, Integer.MAX_VALUE);

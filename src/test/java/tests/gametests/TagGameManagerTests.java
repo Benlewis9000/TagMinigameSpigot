@@ -14,16 +14,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class TagGameManagerTests extends MockBukkitTests {
 
-    @BeforeEach
-    void setUp(){
-        setUpBukkit();
-    }
-
-    @AfterEach
-    void tearDown(){
-        tearDownBukkit();
-    }
-
     @Test
     void createGame_ShouldIncrementGameId(){
         TagGameManager manager = new TagGameManager(plugin);
