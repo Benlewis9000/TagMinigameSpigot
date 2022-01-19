@@ -2,6 +2,7 @@ package io.benlewis.tagminigame.commands;
 
 import io.benlewis.tagminigame.TagPlugin;
 import io.benlewis.tagminigame.game.tag.TagGame;
+import io.benlewis.tagminigame.game.tag.TagGamePhase;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -45,6 +46,10 @@ public class CmdJoin extends TagCommand {
         TagGame game = plugin.getTagGameManager().getGame(gameId);
         if (game.isFull()){
             sender.sendMessage(ChatColor.RED + "This game is full.");
+            return true;
+        }
+        if (game.getPhase() != TagGamePhase.LOBBY){
+            sender.sendMessage(ChatColor.RED + "This game has already started.");
             return true;
         }
         try {
