@@ -42,12 +42,12 @@ public class CmdJoin extends TagCommand {
             return true;
         }
         TagGame game = plugin.getTagGameManager().getGame(gameId);
-        if (game.isFull()){
-            sender.sendMessage(ChatColor.RED + "This game is full.");
-            return true;
-        }
         if (game.getPhase() != TagGamePhase.LOBBY){
             sender.sendMessage(ChatColor.RED + "This game has already started.");
+            return true;
+        }
+        if (game.isFull()){
+            sender.sendMessage(ChatColor.RED + "This game is full.");
             return true;
         }
         try {
