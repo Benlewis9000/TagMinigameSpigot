@@ -44,12 +44,19 @@ public class TagGameTests extends MockBukkitTests {
     }
 
     @Test
-    void gameJoinWhenInOtherGame_ShouldThrow(){
+    void gameRegisterWhenInOtherGame_ShouldThrow(){
         Player p = server.addPlayer();
         TagGame game = gameManager.createGame(Integer.MAX_VALUE, Integer.MAX_VALUE);
         game.register(p);
         TagGame game2 = gameManager.createGame(1,1);
         assertThrows(IllegalArgumentException.class, () -> game2.register(p));
+    }
+
+    @Test
+    void gameRegisterWhenFull_ShouldThrow(){
+        TagGame game = gameManager.createGame(1, 1);
+        game.register(server.addPlayer());
+        assertThrows(IllegalStateException.class, () -> game.register(server.addPlayer()));
     }
 
     @Test
