@@ -27,6 +27,7 @@ public class DataPlayerManager implements IPlayerManager<DataPlayer> {
         remove(player.getUniqueId());
     }
 
+    @Override
     public void remove(UUID uuid){
         players.remove(uuid);
     }
@@ -36,6 +37,7 @@ public class DataPlayerManager implements IPlayerManager<DataPlayer> {
         return contains(player.getUniqueId());
     }
 
+    @Override
     public boolean contains(UUID uuid){
         return players.containsKey(uuid);
     }
@@ -45,6 +47,7 @@ public class DataPlayerManager implements IPlayerManager<DataPlayer> {
         return get(player.getUniqueId());
     }
 
+    @Override
     public DataPlayer get(UUID uuid){
         return requireNonNull(players.get(uuid), "a PlayerData wrapper for UUID" + uuid
                 + " was not found");

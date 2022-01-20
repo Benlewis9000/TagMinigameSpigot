@@ -48,23 +48,42 @@ public class Countdown implements Runnable {
         remainingTicks -= intervalTicks;
     }
 
+    /**
+     * Remove the task from the scheduler and perform any cancellation task.
+     */
     public void cancel(){
         cancelTask.run();
         plugin.getServer().getScheduler().cancelTask(taskId);
     }
 
+    /**
+     * Get instance of owning plugin.
+     * @return owning plugin
+     */
     public JavaPlugin getPlugin() {
         return plugin;
     }
 
+    /**
+     * Get total length of countdown in ticks.
+     * @return total tick length of countdown
+     */
     public long getTotalTicks() {
         return totalTicks;
     }
 
+    /**
+     * Get interval period between interval task in ticks.
+     * @return interval period ticks
+     */
     public long getIntervalTicks() {
         return intervalTicks;
     }
 
+    /**
+     * Get ticks remaining until task is complete.
+     * @return ticks remaining
+     */
     public long getRemainingTicks() {
         return remainingTicks;
     }

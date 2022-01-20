@@ -38,6 +38,10 @@ public class DataPlayer implements IPlayerWrapper {
         return gameId;
     }
 
+    /**
+     * Set the players game ID to that of the game they are in.
+     * @param id ID of game, where id >= 0
+     */
     public void setGameId(int id) {
         if (id < 0){
             throw new IllegalArgumentException("a game ID is a positive integer, it cannot be " + id);
@@ -45,10 +49,17 @@ public class DataPlayer implements IPlayerWrapper {
         this.gameId = id;
     }
 
+    /**
+     * Query whether the player is in a game.
+     * @return true if player is in game
+     */
     public boolean isInGame(){
         return this.gameId >= 0;
     }
 
+    /**
+     * Remove the players game ID. Player will no longer be considered to be in a game.
+     */
     public void removeGameId(){
         this.gameId = -1;
     }

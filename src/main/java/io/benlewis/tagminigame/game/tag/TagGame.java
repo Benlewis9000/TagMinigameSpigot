@@ -131,10 +131,18 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         this.phase = phase;
     }
 
+    /**
+     * Start the game.
+     */
     public void startGame(){
         phase = GAME;
+        // TODO
     }
 
+    /**
+     * Start a countdown to start the game.
+     */
+    // TODO take period in seconds and when to send messages as array in seconds
     private void startCountdown() {
         if (phase != LOBBY) {
             throw new IllegalStateException("tried to start lobby countdown outside of lobby");
@@ -166,6 +174,9 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
                 .start();
     }
 
+    /**
+     * Cancel the countdown to start the game.
+     */
     private void cancelCountdown(){
         if (countdown != null){
             countdown.cancel();
@@ -173,6 +184,13 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         }
     }
 
+    /**
+     * Logic to execute when a player in this game hits another player in this game. Zeroes damage and will call
+     * {@link #transferTag(TagPlayer, TagPlayer)} if criteria met.
+     * @param event where player hit player
+     * @param attackerUuid attacking player's UUID
+     * @param victimUuid victim player's UUID
+     */
     public void playerHitPlayer(EntityDamageByEntityEvent event, UUID attackerUuid, UUID victimUuid){
         if (getPhase() != TagGamePhase.GAME) {
             event.setCancelled(true);
@@ -190,11 +208,16 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         }
         else {
             plugin.debug("doing placeholder tag code");
-            playerTagPlayer(attacker, victim);
+            transferTag(attacker, victim);
         }
     }
 
-    public void playerTagPlayer(TagPlayer attacker, TagPlayer victim){
+    /**
+     * Transfer tag from attacker to victim.
+     * @param attacker tagging player
+     * @param victim player to be tagged
+     */
+    public void transferTag(TagPlayer attacker, TagPlayer victim){
         attacker.setTagged(false);
         attacker.getPlayer().sendMessage(ChatColor.GREEN + "You just tagged "
                 + victim.getPlayer().getDisplayName() + "!");
