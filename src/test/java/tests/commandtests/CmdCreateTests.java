@@ -27,16 +27,6 @@ public class CmdCreateTests extends MockBukkitTests {
         assertTrue(gameManager.hasGame(0));
     }
 
-    @Test
-    void shouldWarn_InsufficientArgs(){
-        assertThrows(NoSuchElementException.class, () -> plugin.getTagGameManager().getGame(0));
-        PlayerMock p = server.addPlayer();
-        p.setOp(true);
-        plugin.getServer().dispatchCommand(p, "create 1");
-        assertTrue(p.nextMessage().toLowerCase(Locale.ENGLISH).contains("insufficient args"));
-        assertFalse(gameManager.hasGame(0));
-    }
-
     @ParameterizedTest
     @MethodSource("provideBadArgs")
     void badArgs_ShouldWarnSender(String command, String expectedMessage){
