@@ -5,6 +5,8 @@ import be.seeseemelk.mockbukkit.ServerMock;
 import io.benlewis.tagminigame.TagPlugin;
 import io.benlewis.tagminigame.game.data.DataPlayerManager;
 import io.benlewis.tagminigame.game.tag.TagGameManager;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 
 public class MockBukkitTests {
 
@@ -13,6 +15,7 @@ public class MockBukkitTests {
     protected DataPlayerManager dataPlayerManager;
     protected TagGameManager gameManager;
 
+    @BeforeEach
     protected void setUpBukkit(){
         server = MockBukkit.mock();
         plugin = MockBukkit.load(TagPlugin.class);
@@ -20,6 +23,7 @@ public class MockBukkitTests {
         gameManager = plugin.getTagGameManager();
     }
 
+    @AfterEach
     protected void tearDownBukkit(){
         MockBukkit.unmock();
     }
