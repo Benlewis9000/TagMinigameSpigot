@@ -41,7 +41,10 @@ public class CmdCreate extends TagCommand {
                         "Please use a valid integer.");
                 return true;
             }
-            // TODO: Ensure min < max players
+            if (minNoPlayers > maxNoPlayers){
+                sender.sendMessage(ChatColor.RED + "Min number of players may not be larger than max number of players.");
+                return true;
+            }
             TagGame game = plugin.getTagGameManager().createGame(minNoPlayers, maxNoPlayers);
             sender.sendMessage(ChatColor.GREEN + "Game created with ID " + game.getId() + "!");
         }
