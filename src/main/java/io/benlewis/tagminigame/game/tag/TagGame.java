@@ -97,6 +97,8 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         plugin.getPlayerDataManager().get(uuid).removeGameId();
         if (phase == LOBBY && players.size() < minPlayers) {
             cancelCountdown();
+            players.forEach((k, v) -> v.getPlayer().sendMessage(
+                    ChatColor.RED + "Not enough players to start the game! Countdown cancelled."));
         }
     }
 
@@ -168,9 +170,6 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
                         }
                 )
                 .endTask(this::startGame)
-                .cancelTask(() -> players.forEach((k, v) -> v.getPlayer().sendMessage(
-                        ChatColor.RED + "Not enough players to start the game! Countdown cancelled."))
-                )
                 .start();
     }
 
