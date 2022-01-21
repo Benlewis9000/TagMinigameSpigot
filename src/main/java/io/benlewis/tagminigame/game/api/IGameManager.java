@@ -28,6 +28,8 @@ public interface IGameManager <T extends IGame<? extends IPlayerWrapper, ? exten
     /**
      * Create a new {@link IGame} registered with this manager. Throws {@link IllegalArgumentException} if the generated ID is
      * already in use.
+     * @param minNoPlayers minimum number of players required for a game to begin
+     * @param maxNoPlayers maximum number of players that can be in the game
      * @return game created
      */
     T createGame(int minNoPlayers, int maxNoPlayers);
