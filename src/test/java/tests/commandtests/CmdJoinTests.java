@@ -2,6 +2,7 @@ package tests.commandtests;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import io.benlewis.tagminigame.game.tag.TagGame;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -19,11 +20,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CmdJoinTests extends MockBukkitTests {
 
+    PlayerMock p;
+
+    @Override
+    @BeforeEach
+    protected void setUpBukkit(){
+        super.setUpBukkit();
+        p = server.addPlayer();
+    }
+
+
     @Test
     void shouldJoinGameSuccessfully(){
         TagGame game = gameManager.createGame(2, 2);
         assertEquals(0, game.getId());
-        PlayerMock p = server.addPlayer();
         p.addAttachment(plugin).setPermission("tag.join", true);
         assertFalse(game.contains(p));
         plugin.getServer().dispatchCommand(p, "join 0");
@@ -32,12 +42,34 @@ public class CmdJoinTests extends MockBukkitTests {
     }
 
     @Test
+    void alreadyInAGame_ShouldFail(){
+        TagGame game0 = gameManager.createGame(2,2);
+        TagGame game1 = gameManager.createGame(2,2);
+        game0.register(p);
+        p.addAttachment(plugin).setPermission("tag.join", true);
+        assertTrue(game0.contains(p));
+        assertEquals(game1.getId(), 1);
+        plugin.getServer().dispatchCommand(p, "join 1");
+        assertFalse(game1.contains(p));
+        assertTrue(p.nextMessage().toLowerCase(Locale.UK).contains("already in a game"));
+    }
+
+    @Test
+    void gameIsFull_ShouldFail(){
+        TagGame game = gameManager.createGame(0,0);
+        assertEquals(0, game.getId());
+        p.addAttachment(plugin).setPermission("tag.join", true);
+        plugin.getServer().dispatchCommand(p, "join 0");
+        assertFalse(game.contains(p));
+        assertTrue(p.nextMessage().toLowerCase(Locale.UK).contains("game is full"));
+    }
+
+    @Test
     void notLobby_ShouldFail(){
         TagGame game = gameManager.createGame(2,2);
         game.startGame();
         assertEquals(0, game.getId());
         assertNotSame(game.getPhase(), LOBBY);
-        PlayerMock p = server.addPlayer();
         p.addAttachment(plugin).setPermission("tag.join", true);
         plugin.getServer().dispatchCommand(p, "join 0");
         assertFalse(game.contains(p));
@@ -48,7 +80,6 @@ public class CmdJoinTests extends MockBukkitTests {
     @MethodSource("provideBadArgs")
     void badArgs_ShouldWarnSender(String command, String expectedMessage){
         TagGame game = gameManager.createGame(2, 2);
-        PlayerMock p = server.addPlayer();
         p.addAttachment(plugin).setPermission("tag.join", true);
         plugin.getServer().dispatchCommand(p, command);
         assertTrue(p.nextMessage().toLowerCase(Locale.UK).contains(expectedMessage));
