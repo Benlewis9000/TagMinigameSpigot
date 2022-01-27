@@ -52,6 +52,7 @@ public class CmdJoin extends TagCommand {
         }
         try {
             game.register((Player) sender);
+            player.sendMessage(ChatColor.GREEN + "You have joined game " + game.getId() + "!");
         }
         catch(Exception e){
             sender.sendMessage(ChatColor.DARK_RED + "Error: " + ChatColor.RED + " Failed to join game, " + e.getMessage());
