@@ -11,7 +11,7 @@ commands:
     permission: tag.join
   quit:
     description: Quit a tag game.
-    permission: tag.create
+    permission: tag.quit
   settag:
     description: Force set a player in a game's tag status.
     permission: tag.settag

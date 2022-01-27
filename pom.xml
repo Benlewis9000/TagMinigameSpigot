@@ -52,7 +52,6 @@
             <artifactId>MockBukkit-v1.18</artifactId>
             <version>1.15.0</version>
         </dependency>
-
     </dependencies>
 
     <build>

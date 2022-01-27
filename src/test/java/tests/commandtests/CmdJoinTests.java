@@ -34,8 +34,8 @@ public class CmdJoinTests extends MockBukkitTests {
     void shouldJoinGameSuccessfully(){
         TagGame game = gameManager.createGame(2, 2);
         assertEquals(0, game.getId());
-        p.addAttachment(plugin).setPermission("tag.join", true);
         assertFalse(game.contains(p));
+        p.addAttachment(plugin).setPermission("tag.join", true);
         plugin.getServer().dispatchCommand(p, "join 0");
         assertTrue(game.contains(p));
         assertTrue(p.nextMessage().toLowerCase(Locale.UK).contains("joined game"));
@@ -46,9 +46,9 @@ public class CmdJoinTests extends MockBukkitTests {
         TagGame game0 = gameManager.createGame(2,2);
         TagGame game1 = gameManager.createGame(2,2);
         game0.register(p);
-        p.addAttachment(plugin).setPermission("tag.join", true);
         assertTrue(game0.contains(p));
         assertEquals(game1.getId(), 1);
+        p.addAttachment(plugin).setPermission("tag.join", true);
         plugin.getServer().dispatchCommand(p, "join 1");
         assertFalse(game1.contains(p));
         assertTrue(p.nextMessage().toLowerCase(Locale.UK).contains("already in a game"));

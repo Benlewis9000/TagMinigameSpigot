@@ -1,8 +1,6 @@
 package tests.commandtests;
 
 import be.seeseemelk.mockbukkit.entity.PlayerMock;
-import io.benlewis.tagminigame.game.tag.TagGame;
-import org.bukkit.entity.Player;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
