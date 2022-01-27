@@ -15,12 +15,11 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CmdCreateTests extends MockBukkitTests {
+public class CmdCreateTests extends CommandTest {
 
     @Test
     void shouldCreateGameSuccessfully(){
         assertThrows(NoSuchElementException.class, () -> plugin.getTagGameManager().getGame(0));
-        PlayerMock p = server.addPlayer();
         p.setOp(true);
         plugin.getServer().dispatchCommand(p, "create 1 2");
         assertTrue(p.nextMessage().toLowerCase(Locale.UK).contains("game created"));
@@ -31,7 +30,6 @@ public class CmdCreateTests extends MockBukkitTests {
     @MethodSource("provideBadArgs")
     void badArgs_ShouldWarnSender(String command, String expectedMessage){
         assertThrows(NoSuchElementException.class, () -> plugin.getTagGameManager().getGame(0));
-        PlayerMock p = server.addPlayer();
         p.setOp(true);
         plugin.getServer().dispatchCommand(p, command);
         assertTrue(p.nextMessage().toLowerCase(Locale.UK).contains(expectedMessage));

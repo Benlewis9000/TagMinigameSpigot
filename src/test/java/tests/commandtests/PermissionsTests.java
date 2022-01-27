@@ -12,13 +12,12 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class PermissionsTests extends MockBukkitTests {
+public class PermissionsTests extends CommandTest {
 
     // TODO: Permission defaults unintentionally ignored here - perhaps a MockBukkit bug?
     @ParameterizedTest
     @MethodSource("permissions")
     void permissions_noPermThenPerm(String command, String permission){
-        PlayerMock p = server.addPlayer();
         server.dispatchCommand(p, command);
         assertTrue(p.nextMessage().contains("do not have permission"));
         p.addAttachment(plugin).setPermission(permission, true);

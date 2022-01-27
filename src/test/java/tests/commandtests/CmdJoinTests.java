@@ -18,17 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CmdJoinTests extends MockBukkitTests {
-
-    PlayerMock p;
-
-    @Override
-    @BeforeEach
-    protected void setUpBukkit(){
-        super.setUpBukkit();
-        p = server.addPlayer();
-    }
-
+public class CmdJoinTests extends CommandTest {
 
     @Test
     void shouldJoinGameSuccessfully(){
