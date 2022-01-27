@@ -36,9 +36,9 @@ public class CmdSetTag extends TagCommand {
         boolean tagged = Boolean.parseBoolean(args[1]);
         TagPlayer tagPlayer = plugin.getTagGameManager().getGame(plugin.getPlayerDataManager().get(player).getGameId())
                 .get(player);
-        // TODO update to use appropriate tag event, not just set straight here
+        // TODO update to use appropriate tag system, not just set straight here
         tagPlayer.setTagged(tagged);
-        sender.sendMessage(ChatColor.GREEN + player.getName() + " has been set as " + (tagged ? "" : "not") + " tagged.");
+        sender.sendMessage(ChatColor.GREEN + player.getName() + " has been set as " + (tagged ? "" : "not ") + "tagged.");
         return true;
     }
 
