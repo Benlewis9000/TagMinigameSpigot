@@ -20,20 +20,20 @@ public class CmdSetTag extends TagCommand {
             sender.sendMessage(ChatColor.RED + "Insufficient args: /settag <player> <true/false>");
             return true;
         }
+        if (!args[1].equalsIgnoreCase("true") && !args[1].equalsIgnoreCase("false")) {
+            sender.sendMessage(ChatColor.RED + "Invalid args: /settag <player> <true/false>");
+            return true;
+        }
         Player player = plugin.getServer().getPlayerExact(args[0]);
         if (player == null) {
             sender.sendMessage(ChatColor.RED + "Player " + args[0] + " is not online.");
             return true;
         }
-        if (!args[1].equalsIgnoreCase("true") && !args[1].equalsIgnoreCase("false")) {
-            sender.sendMessage(ChatColor.RED + "Invalid args: /settag <player> <true/false>");
-            return true;
-        }
-        boolean tagged = Boolean.parseBoolean(args[1]);
         if (!plugin.getPlayerDataManager().get(player).isInGame()) {
             sender.sendMessage(ChatColor.RED + "Player " + player.getName() + " is not in a game.");
             return true;
         }
+        boolean tagged = Boolean.parseBoolean(args[1]);
         TagPlayer tagPlayer = plugin.getTagGameManager().getGame(plugin.getPlayerDataManager().get(player).getGameId())
                 .get(player);
         // TODO update to use appropriate tag event, not just set straight here

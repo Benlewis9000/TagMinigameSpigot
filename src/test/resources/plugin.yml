@@ -1,0 +1,30 @@
+main: io.benlewis.tagminigame.TagPlugin
+name: TagMinigame
+version: ${project.version}
+author: AnarchistDev
+commands:
+  create:
+    description: Create a new tag game.
+    permission: tag.create
+  join:
+    description: Join a tag game.
+    permission: tag.join
+  quit:
+    description: Quit a tag game.
+    permission: tag.quit
+  settag:
+    description: Force set a player in a game's tag status.
+    permission: tag.settag
+permissions:
+  tag.create:
+    description: Allow user to create a new tag game.
+    default: op
+  tag.join:
+    description: Allow user to join a tag game.
+    default: true
+  tag.quit:
+    description: Allow user to quit a tag game.
+    default: true
+  tag.settag:
+    description: Allow user to force set a players tag status.
+    default: op

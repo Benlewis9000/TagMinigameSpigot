@@ -82,7 +82,6 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         if (players.size() >= minPlayers){
             startCountdown();
         }
-        player.sendMessage(ChatColor.GREEN + "You have joined game " + getId() + "!");
         return tagPlayer;
     }
 

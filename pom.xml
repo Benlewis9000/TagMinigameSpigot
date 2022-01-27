@@ -16,26 +16,21 @@
 
     <repositories>
         <!-- This adds the Spigot Maven repository to the build -->
-        <repository>
+        <!--<repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>
+        </repository>-->
     </repositories>
 
     <dependencies>
+        <!-- NOTE: Comment or uncomment whether using offline or maven repo for spigot API! -->
         <!-- This adds the Spigot API artifact to the build -->
-        <dependency>
+<!--        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.18.1-R0.1-SNAPSHOT</version>
+            <version>1.18.1-R0.1-shaded-SNAPSHOT</version>
             <scope>provided</scope>
-        </dependency>
-        <!-- Allows annotations instead of plugin.yml -->
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>plugin-annotations</artifactId>
-            <version>1.2.3-SNAPSHOT</version>
-        </dependency>
+        </dependency>-->
 
         <!-- Testing frameworks -->
         <dependency>
@@ -44,18 +39,6 @@
             <version>5.8.2</version>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-module-junit4</artifactId>
-            <version>${powermock.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.powermock</groupId>
-            <artifactId>powermock-api-mockito2</artifactId>
-            <version>${powermock.version}</version>
-            <scope>test</scope>
-        </dependency>-->
         <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
         <dependency>
             <groupId>org.mockito</groupId>
@@ -69,13 +52,13 @@
             <artifactId>MockBukkit-v1.18</artifactId>
             <version>1.15.0</version>
         </dependency>
-
     </dependencies>
 
     <build>
         <finalName>${project.artifactId}-${project.version}</finalName>
         <resources>
             <resource>
+                <targetPath>.</targetPath>
                 <directory>src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
