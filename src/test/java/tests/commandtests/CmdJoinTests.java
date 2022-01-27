@@ -55,13 +55,11 @@ public class CmdJoinTests extends MockBukkitTests {
     }
 
     @Test
-    void gameIsFull_ShouldFail(){
-        TagGame game = gameManager.createGame(0,0);
-        assertEquals(0, game.getId());
+    void noGameWithId_ShouldFail(){
         p.addAttachment(plugin).setPermission("tag.join", true);
         plugin.getServer().dispatchCommand(p, "join 0");
-        assertFalse(game.contains(p));
-        assertTrue(p.nextMessage().toLowerCase(Locale.UK).contains("game is full"));
+        assertFalse(dataPlayerManager.get(p).isInGame());
+        assertTrue(p.nextMessage().toLowerCase(Locale.UK).contains("no game with an id of"));
     }
 
     @Test
@@ -74,6 +72,16 @@ public class CmdJoinTests extends MockBukkitTests {
         plugin.getServer().dispatchCommand(p, "join 0");
         assertFalse(game.contains(p));
         assertTrue(p.nextMessage().toLowerCase(Locale.UK).contains("already started"));
+    }
+
+    @Test
+    void gameIsFull_ShouldFail(){
+        TagGame game = gameManager.createGame(0,0);
+        assertEquals(0, game.getId());
+        p.addAttachment(plugin).setPermission("tag.join", true);
+        plugin.getServer().dispatchCommand(p, "join 0");
+        assertFalse(game.contains(p));
+        assertTrue(p.nextMessage().toLowerCase(Locale.UK).contains("game is full"));
     }
 
     @ParameterizedTest
