@@ -1,0 +1,8 @@
+config-version: 1.0.0
+debug: false
+test-string: "Hello, config.yml!"
+test-list:
+  - "a"
+  - "b"
+  - "c"
+
