@@ -1,2 +1,8 @@
-# Project exclude paths
+# Output
 /target/
+
+# Test MC server
+/testserver/
+
+# IntelliJ
+/.idea/
