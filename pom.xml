@@ -16,27 +16,41 @@
 
     <repositories>
         <!-- This adds the Spigot Maven repository to the build -->
-        <!--<repository>
+        <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-        </repository>-->
+        </repository>
+
+        <repository>
+            <id>papermc</id>
+            <url>https://repo.papermc.io/repository/maven-public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
-        <!-- NOTE: Comment or uncomment whether using offline or maven repo for spigot API! -->
-        <!-- This adds the Spigot API artifact to the build -->
-<!--        <dependency>
+        <!-- MockBukkit must be listed above Spigot as it depends on Paper. Builds in test will fail otherwise.
+        See https://github.com/MockBukkit/MockBukkit/issues/462#issuecomment-1156574495 -->
+        <!-- https://mvnrepository.com/artifact/com.github.seeseemelk/MockBukkit-v1.19 -->
+        <dependency>
+            <groupId>com.github.seeseemelk</groupId>
+            <artifactId>MockBukkit-v1.19</artifactId>
+            <version>2.110.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- NOTE: Comment or uncomment whether using local or maven repo for spigot API! -->
+        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.18.1-R0.1-shaded-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>-->
+            <version>1.19.1-R0.1-SNAPSHOT</version>
+            <classifier>shaded</classifier>
+        </dependency>
 
         <!-- Testing frameworks -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.8.2</version>
+            <version>5.9.0</version>
             <scope>test</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
@@ -45,12 +59,6 @@
             <artifactId>mockito-core</artifactId>
             <version>4.2.0</version>
             <scope>test</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.github.seeseemelk/MockBukkit-v1.18 -->
-        <dependency>
-            <groupId>com.github.seeseemelk</groupId>
-            <artifactId>MockBukkit-v1.18</artifactId>
-            <version>1.15.0</version>
         </dependency>
     </dependencies>
 

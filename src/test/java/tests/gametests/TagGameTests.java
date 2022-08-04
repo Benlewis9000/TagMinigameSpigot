@@ -4,7 +4,7 @@ import be.seeseemelk.mockbukkit.entity.PlayerMock;
 import io.benlewis.tagminigame.game.data.DataPlayer;
 import io.benlewis.tagminigame.game.tag.TagGame;
 import io.benlewis.tagminigame.game.tag.TagPlayer;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 import org.junit.jupiter.api.Test;
 import tests.MockBukkitTests;
