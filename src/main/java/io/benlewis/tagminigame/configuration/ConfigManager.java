@@ -12,10 +12,11 @@ import java.util.HashMap;
 public class ConfigManager implements IConfigManager {
 
     private final TagPlugin plugin;
-    private HashMap<ConfigType, FileConfiguration> configurations;
+    private final HashMap<ConfigType, FileConfiguration> configurations;
 
     public ConfigManager(TagPlugin plugin) {
         this.plugin = plugin;
+        configurations = new HashMap<>();
     }
 
     @Override
@@ -23,7 +24,10 @@ public class ConfigManager implements IConfigManager {
         if (configurations.containsKey(type)) {
             return configurations.get(type);
         }
+        return load(type);
+    }
 
+    private FileConfiguration load(ConfigType type){
         File file = new File(plugin.getDataFolder(), type.fileName);
         if (!file.exists()){
             file.getParentFile().mkdirs();
@@ -34,17 +38,34 @@ public class ConfigManager implements IConfigManager {
         try {
             config.load(file);
         }
-        catch (InvalidConfigurationException ex){
+        catch (InvalidConfigurationException e){
             plugin.getLogger().warning("Invalid configuration for file \"%s\". Using defaults.".formatted(type.fileName));
-            ex.printStackTrace();
+            e.printStackTrace();
         }
-        catch (IOException ex){
+        catch (IOException e){
             plugin.getLogger().warning("Unable to read configuration file \"%s\". Using defaults.".formatted(type.fileName));
-            ex.printStackTrace();
+            e.printStackTrace();
         }
         // TODO defaults for files not loaded - this will probs be done in whatever class processes the FileConfiguration
         configurations.put(type, config);
         return config;
+    }
+
+    @Override
+    public void saveAll() {
+        configurations.keySet().forEach(this::save);
+    }
+
+    @Override
+    public void save(ConfigType type) {
+        FileConfiguration config = get(type);
+        try {
+            config.save(type.fileName);
+            plugin.getLogger().info("Saved configuration \"%s\"".formatted(type.fileName));
+        } catch (IOException e) {
+            plugin.getLogger().warning("Failed to save configuration to file \"%s\"".formatted(type.fileName));
+            e.printStackTrace();
+        }
     }
 
 }

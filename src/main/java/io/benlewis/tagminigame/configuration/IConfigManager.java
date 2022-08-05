@@ -11,4 +11,15 @@ public interface IConfigManager {
      */
     FileConfiguration get(ConfigType type);
 
+    /**
+     * Save all {@link FileConfiguration} in the manager to file.
+     */
+    void saveAll();
+
+    /**
+     * Save the {@link FileConfiguration} associated with the type to file.
+     * @param type of config to save
+     */
+    void save(ConfigType type);
+
 }
