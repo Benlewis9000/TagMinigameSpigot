@@ -1,48 +1,30 @@
 package tests.configurationtests;
 
-import org.bukkit.configuration.InvalidConfigurationException;
+import io.benlewis.tagminigame.configuration.ConfigManager;
+import io.benlewis.tagminigame.configuration.IConfigManager;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.EnumSource;
+import tests.MockBukkitTests;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Random;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.jupiter.api.Assertions.*;
+public class ConfigManagerTests extends MockBukkitTests {
 
-public class ConfigManagerTests extends ConfigurationTest {
+    protected IConfigManager configManager;
+
+    @Override
+    @BeforeEach
+    protected void setUpBukkit(){
+        super.setUpBukkit();
+        configManager = new ConfigManager(plugin);
+    }
 
     @Test
-    public void LoadPresentConfigWithValues(){
-        FileConfiguration config = configManager.get(TestConfigType.TEST_PRESENT);
+    public void LoadPresentConfigWithValues() {
+        FileConfiguration config = configManager.get(TestConfigType.TEST_PRESENT).getFileConfiguration();
         assertEquals("test-present", config.getString("name"));
         assertEquals(42, config.getInt("value"));
-    }
-
-    @Test
-    public void LoadChangeAndReloadValues(){
-        FileConfiguration config = configManager.get(TestConfigType.TEST_PRESENT);
-        assertFalse(config.getBoolean("modified"));
-        config.set("modified", true);
-        assertTrue(config.getBoolean("modified"));
-        FileConfiguration reloadedConfig = configManager.reload(TestConfigType.TEST_PRESENT);
-        assertFalse(reloadedConfig.getBoolean("modified"));
-    }
-
-    @ParameterizedTest
-    @EnumSource(TestConfigType.class)
-    public void SaveConfigAndCheckValue(TestConfigType configType) throws IOException, InvalidConfigurationException {
-        Random rng = new Random();
-        int random = rng.nextInt();
-        FileConfiguration config = configManager.get(configType);
-        config.set("random", random);
-        configManager.save(configType);
-        FileConfiguration loaded = new YamlConfiguration();
-        loaded.load(new File(configType.getFileName()));
-        assertEquals(random,loaded.getInt("random"));
     }
 
 }
