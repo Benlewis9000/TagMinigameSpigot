@@ -9,7 +9,7 @@ public interface IConfigManager {
      * @param type type of config to get
      * @return {@link FileConfiguration} associated with the given file type
      */
-    FileConfiguration get(ConfigType type);
+    FileConfiguration get(IConfigType type);
 
     /**
      * Save all {@link FileConfiguration} in the manager to file.
@@ -20,6 +20,6 @@ public interface IConfigManager {
      * Save the {@link FileConfiguration} associated with the type to file.
      * @param type of config to save
      */
-    void save(ConfigType type);
+    void save(IConfigType type);
 
 }
