@@ -12,26 +12,32 @@ import java.util.HashMap;
 public class ConfigManager implements IConfigManager {
 
     private final TagPlugin plugin;
-    private final HashMap<ConfigType, FileConfiguration> configurations;
+    private final HashMap<IConfigType, FileConfiguration> configurations;
 
+    // TODO encapsulate/protect, should only be one configmanager, hard to access
     public ConfigManager(TagPlugin plugin) {
         this.plugin = plugin;
         configurations = new HashMap<>();
     }
 
     @Override
-    public FileConfiguration get(ConfigType type) {
+    public FileConfiguration get(IConfigType type) {
         if (configurations.containsKey(type)) {
             return configurations.get(type);
         }
         return load(type);
     }
 
-    private FileConfiguration load(ConfigType type){
-        File file = new File(plugin.getDataFolder(), type.fileName);
-        if (!file.exists()){
+    private FileConfiguration load(IConfigType type){
+        File file = new File(plugin.getDataFolder(), type.getFileName());
+        if (!file.exists()) {
+            // Attempt to copy default template of config, if one is present in jar
             file.getParentFile().mkdirs();
-            plugin.saveResource(type.fileName, false);
+            try {
+                plugin.saveResource(type.getFileName(), false);
+            } catch(IllegalArgumentException e){
+                plugin.getLogger().warning("No template file was found for \"%s\"".formatted(type.getFileName()));
+            }
         }
 
         FileConfiguration config = new YamlConfiguration();
@@ -39,14 +45,17 @@ public class ConfigManager implements IConfigManager {
             config.load(file);
         }
         catch (InvalidConfigurationException e){
-            plugin.getLogger().warning("Invalid configuration for file \"%s\". Using defaults.".formatted(type.fileName));
-            e.printStackTrace();
+            plugin.getLogger().warning(("""
+                    Invalid configuration for file "%s":
+                    %s
+                    Using defaults.""").formatted(type.getFileName(), e.getMessage()));
         }
         catch (IOException e){
-            plugin.getLogger().warning("Unable to read configuration file \"%s\". Using defaults.".formatted(type.fileName));
-            e.printStackTrace();
+            plugin.getLogger().warning(("""
+                    Unable to read configuration file "%s":
+                    %s
+                    Using defaults.""").formatted(type.getFileName(), e.getMessage()));
         }
-        // TODO defaults for files not loaded - this will probs be done in whatever class processes the FileConfiguration
         configurations.put(type, config);
         return config;
     }
@@ -57,13 +66,13 @@ public class ConfigManager implements IConfigManager {
     }
 
     @Override
-    public void save(ConfigType type) {
+    public void save(IConfigType type) {
         FileConfiguration config = get(type);
         try {
-            config.save(type.fileName);
-            plugin.getLogger().info("Saved configuration \"%s\"".formatted(type.fileName));
+            config.save(type.getFileName());
+            plugin.getLogger().info("Saved configuration \"%s\"".formatted(type.getFileName()));
         } catch (IOException e) {
-            plugin.getLogger().warning("Failed to save configuration to file \"%s\"".formatted(type.fileName));
+            plugin.getLogger().warning("Failed to save configuration to file \"%s\"".formatted(type.getFileName()));
             e.printStackTrace();
         }
     }
