@@ -9,7 +9,6 @@ public class ConfigManager implements IConfigManager {
     private final TagPlugin plugin;
     private final HashMap<IConfigType, IConfigWrapper> configurations;
 
-    // TODO encapsulate/protect, should only be one configmanager, hard to access
     public ConfigManager(TagPlugin plugin) {
         this.plugin = plugin;
         configurations = new HashMap<>();
