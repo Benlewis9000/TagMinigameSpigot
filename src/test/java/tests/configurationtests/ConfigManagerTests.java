@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ConfigManagerTests extends ConfigurationTest {
 
@@ -20,6 +20,16 @@ public class ConfigManagerTests extends ConfigurationTest {
         FileConfiguration config = configManager.get(TestConfigType.TEST_PRESENT);
         assertEquals("test-present", config.getString("name"));
         assertEquals(42, config.getInt("value"));
+    }
+
+    @Test
+    public void LoadChangeAndReloadValues(){
+        FileConfiguration config = configManager.get(TestConfigType.TEST_PRESENT);
+        assertFalse(config.getBoolean("modified"));
+        config.set("modified", true);
+        assertTrue(config.getBoolean("modified"));
+        FileConfiguration reloadedConfig = configManager.reload(TestConfigType.TEST_PRESENT);
+        assertFalse(reloadedConfig.getBoolean("modified"));
     }
 
     @ParameterizedTest

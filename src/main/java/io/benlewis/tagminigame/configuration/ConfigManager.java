@@ -25,10 +25,11 @@ public class ConfigManager implements IConfigManager {
         if (configurations.containsKey(type)) {
             return configurations.get(type);
         }
-        return load(type);
+        return reload(type);
     }
 
-    private FileConfiguration load(IConfigType type){
+    @Override
+    public FileConfiguration reload(IConfigType type){
         File file = new File(plugin.getDataFolder(), type.getFileName());
         if (!file.exists()) {
             // Attempt to copy default template of config, if one is present in jar
