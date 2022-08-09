@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ConfigWrapperTests extends MockBukkitTests {
 
     @Test
-    public void LoadChangeAndReloadValues(){
+    public void loadThenChangeAndReloadValues_ShouldHaveInitialValue(){
         ConfigWrapper wrapper = new ConfigWrapper(plugin, TestConfigType.TEST_PRESENT.getFileName());
         FileConfiguration config = wrapper.getFileConfiguration();
         assertFalse(config.getBoolean("modified"));
@@ -30,7 +30,7 @@ public class ConfigWrapperTests extends MockBukkitTests {
 
     @ParameterizedTest
     @EnumSource(TestConfigType.class)
-    public void SaveConfigAndCheckValue(TestConfigType configType) throws IOException, InvalidConfigurationException {
+    public void saveConfigAndCheckValue_ShouldHaveSavedValue(TestConfigType configType) throws IOException, InvalidConfigurationException {
         Random rng = new Random();
         int random = rng.nextInt();
         ConfigWrapper wrapper = new ConfigWrapper(plugin, configType.getFileName());

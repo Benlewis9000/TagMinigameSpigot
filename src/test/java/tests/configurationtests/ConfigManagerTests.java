@@ -21,7 +21,7 @@ public class ConfigManagerTests extends MockBukkitTests {
     }
 
     @Test
-    public void LoadPresentConfigWithValues() {
+    public void loadPresentConfigWithValues() {
         FileConfiguration config = configManager.get(TestConfigType.TEST_PRESENT).getFileConfiguration();
         assertEquals("test-present", config.getString("name"));
         assertEquals(42, config.getInt("value"));
