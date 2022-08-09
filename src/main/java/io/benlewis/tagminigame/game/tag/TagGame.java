@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import static io.benlewis.tagminigame.game.tag.TagGamePhase.GAME;
@@ -26,7 +27,7 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
     private final int minPlayers;
     private final int countdownTimeSeconds;
     private TagGamePhase phase;
-    private Countdown countdown;
+    private Optional<Countdown> gameStartCountdown;
 
     protected TagGame(TagPlugin plugin, int id, int minPlayers, int maxPlayers){
         this.plugin = plugin;
@@ -37,7 +38,7 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         this.countdownTimeSeconds = 10;
         players = new HashMap<>();
         phase = LOBBY;
-        countdown = null;
+        gameStartCountdown = Optional.empty();
     }
 
     @Override
@@ -148,10 +149,10 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         if (phase != LOBBY) {
             throw new IllegalStateException("tried to start lobby countdown outside of lobby");
         }
-        if (countdown != null) {
+        if (gameStartCountdown.isPresent()) {
             throw new IllegalStateException("tried to start lobby countdown when one already in progress");
         }
-        countdown = new CountdownBuilder(plugin, countdownTimeSeconds * 20L, 20)
+        Countdown countdown = new CountdownBuilder(plugin, countdownTimeSeconds * 20L, 20)
                 .startTask(() -> players.forEach((k, v) -> v.getPlayer().sendMessage(
                         ChatColor.GREEN + "Minimum players reached! Game start in " + countdownTimeSeconds
                                 + "s!"))
@@ -170,15 +171,16 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
                 )
                 .endTask(this::startGame)
                 .start();
+        gameStartCountdown = Optional.of(countdown);
     }
 
     /**
      * Cancel the countdown to start the game.
      */
     private void cancelCountdown(){
-        if (countdown != null){
-            countdown.cancel();
-            countdown = null;
+        if (gameStartCountdown.isPresent()){
+            gameStartCountdown.get().cancel();
+            gameStartCountdown = Optional.empty();
         }
     }
 

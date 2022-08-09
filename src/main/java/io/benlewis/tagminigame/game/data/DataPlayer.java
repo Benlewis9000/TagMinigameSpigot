@@ -4,6 +4,7 @@ import io.benlewis.tagminigame.game.api.IPlayerWrapper;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
@@ -12,12 +13,12 @@ public class DataPlayer implements IPlayerWrapper {
 
     private final Server server;
     private final UUID playerUuid;
-    private int gameId;
+    private Optional<Integer> gameId;
 
     protected DataPlayer(Player player){
         this.server = player.getServer();
         this.playerUuid = player.getUniqueId();
-        this.gameId = -1;
+        this.gameId = Optional.empty();
     }
 
     @Override
@@ -35,7 +36,7 @@ public class DataPlayer implements IPlayerWrapper {
         if (!isInGame()){
             throw new NullPointerException("Player with UUID " + playerUuid + " is not in a game");
         }
-        return gameId;
+        return gameId.get();
     }
 
     /**
@@ -46,7 +47,7 @@ public class DataPlayer implements IPlayerWrapper {
         if (id < 0){
             throw new IllegalArgumentException("a game ID is a positive integer, it cannot be " + id);
         }
-        this.gameId = id;
+        this.gameId = Optional.of(id);
     }
 
     /**
@@ -54,14 +55,14 @@ public class DataPlayer implements IPlayerWrapper {
      * @return true if player is in game
      */
     public boolean isInGame(){
-        return this.gameId >= 0;
+        return gameId.isPresent();
     }
 
     /**
      * Remove the players game ID. Player will no longer be considered to be in a game.
      */
     public void removeGameId(){
-        this.gameId = -1;
+        this.gameId = Optional.empty();
     }
 
 }
