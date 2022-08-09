@@ -14,8 +14,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import static io.benlewis.tagminigame.game.tag.TagGamePhase.GAME;
-import static io.benlewis.tagminigame.game.tag.TagGamePhase.LOBBY;
+import static io.benlewis.tagminigame.game.tag.TagGamePhase.*;
 import static java.util.Objects.requireNonNull;
 
 public class TagGame implements IGame<TagPlayer, TagGamePhase> {
@@ -26,6 +25,7 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
     private final int maxPlayers;
     private final int minPlayers;
     private final int countdownTimeSeconds;
+    private final CountdownBuilder gameStartCountdownBuilder;
     private TagGamePhase phase;
     private Optional<Countdown> gameStartCountdown;
 
@@ -36,9 +36,29 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
         this.minPlayers = minPlayers;
         this.maxPlayers = maxPlayers;
         this.countdownTimeSeconds = 10;
-        players = new HashMap<>();
-        phase = LOBBY;
-        gameStartCountdown = Optional.empty();
+        this.players = new HashMap<>();
+        this.gameStartCountdownBuilder = new CountdownBuilder(plugin, countdownTimeSeconds * 20L, 20)
+                .startTask(() -> {
+                    phase = STARTING;
+                    players.forEach((k, v) -> v.getPlayer().sendMessage(
+                            ChatColor.GREEN + "Minimum players reached! Game start in " + countdownTimeSeconds
+                                    + "s!"));
+                })
+                .intervalTask((c) -> {
+                    if (c.getRemainingTicks() % (20 * 10) == 0
+                            || c.getRemainingTicks() == 20 * 5
+                            || c.getRemainingTicks() == 20 * 3
+                            || c.getRemainingTicks() == 20 * 2
+                            || c.getRemainingTicks() == 20) {
+                        players.forEach((k, v) -> v.getPlayer().sendMessage(
+                                ChatColor.YELLOW + "Game starting in " + c.getRemainingTicks() / 20L
+                                        + "s!"));
+                    }
+                })
+                .endTask(this::startGame)
+                .cancelTask(() -> phase = LOBBY);
+        this.phase = LOBBY;
+        this.gameStartCountdown = Optional.empty();
     }
 
     @Override
@@ -95,8 +115,8 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
     public void remove(UUID uuid) {
         players.remove(uuid);
         plugin.getPlayerDataManager().get(uuid).removeGameId();
-        if (phase == LOBBY && players.size() < minPlayers) {
-            cancelCountdown();
+        if (phase == STARTING && players.size() < minPlayers) {
+            cancelStart();
             players.forEach((k, v) -> v.getPlayer().sendMessage(
                     ChatColor.RED + "Not enough players to start the game! Countdown cancelled."));
         }
@@ -147,37 +167,18 @@ public class TagGame implements IGame<TagPlayer, TagGamePhase> {
     // TODO take period in seconds and when to send messages as array in seconds
     private void startCountdown() {
         if (phase != LOBBY) {
-            throw new IllegalStateException("tried to start lobby countdown outside of lobby");
+            throw new IllegalStateException("tried to start game start countdown outside of lobby");
         }
-        if (gameStartCountdown.isPresent()) {
-            throw new IllegalStateException("tried to start lobby countdown when one already in progress");
+        if (phase == STARTING) {
+            throw new IllegalStateException("tried to start game start countdown when one is already in progress");
         }
-        Countdown countdown = new CountdownBuilder(plugin, countdownTimeSeconds * 20L, 20)
-                .startTask(() -> players.forEach((k, v) -> v.getPlayer().sendMessage(
-                        ChatColor.GREEN + "Minimum players reached! Game start in " + countdownTimeSeconds
-                                + "s!"))
-                )
-                .intervalTask((c) -> {
-                            if (c.getRemainingTicks() % (20 * 10) == 0
-                                    || c.getRemainingTicks() == 20 * 5
-                                    || c.getRemainingTicks() == 20 * 3
-                                    || c.getRemainingTicks() == 20 * 2
-                                    || c.getRemainingTicks() == 20) {
-                                players.forEach((k, v) -> v.getPlayer().sendMessage(
-                                        ChatColor.YELLOW + "Game starting in " + c.getRemainingTicks() / 20L
-                                                + "s!"));
-                            }
-                        }
-                )
-                .endTask(this::startGame)
-                .start();
-        gameStartCountdown = Optional.of(countdown);
+        gameStartCountdown = Optional.of(gameStartCountdownBuilder.start());
     }
 
     /**
      * Cancel the countdown to start the game.
      */
-    private void cancelCountdown(){
+    private void cancelStart(){
         if (gameStartCountdown.isPresent()){
             gameStartCountdown.get().cancel();
             gameStartCountdown = Optional.empty();

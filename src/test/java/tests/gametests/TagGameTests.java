@@ -11,8 +11,7 @@ import tests.MockBukkitTests;
 
 import java.util.Locale;
 
-import static io.benlewis.tagminigame.game.tag.TagGamePhase.GAME;
-import static io.benlewis.tagminigame.game.tag.TagGamePhase.LOBBY;
+import static io.benlewis.tagminigame.game.tag.TagGamePhase.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -101,6 +100,21 @@ public class TagGameTests extends MockBukkitTests {
             nextMessage = pStays.nextMessage();
         }
         assertTrue(StringUtils.contains(lastMessage.toLowerCase(Locale.ENGLISH), "countdown cancelled"));
+    }
+
+    @Test
+    void countdown_ShouldStartAndStopDependingOnPlayerCount(){
+        PlayerMock p = server.addPlayer();
+        TagGame game = gameManager.createGame(1,1);
+        game.register(p);
+        server.getScheduler().performOneTick();
+        assertEquals(STARTING, game.getPhase());
+        game.remove(p);
+        server.getScheduler().performOneTick();
+        assertEquals(LOBBY, game.getPhase());
+        game.register(p);
+        server.getScheduler().performOneTick();
+        assertEquals(STARTING, game.getPhase());
     }
 
 }
