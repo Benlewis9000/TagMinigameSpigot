@@ -33,13 +33,7 @@ public class ConfigWrapper implements IConfigWrapper {
     public FileConfiguration reload() {
         File file = new File(plugin.getDataFolder(), getFilePath());
         if (!file.exists()) {
-            // Attempt to copy default template of config, if one is present in jar
-            file.getParentFile().mkdirs();
-            try {
-                plugin.saveResource(getFilePath(), false);
-            } catch(IllegalArgumentException e){
-                plugin.getLogger().warning("No template file was found for \"%s\"".formatted(getFilePath()));
-            }
+            saveTemplateToFile(file);
         }
 
         config = new YamlConfiguration();
@@ -59,6 +53,15 @@ public class ConfigWrapper implements IConfigWrapper {
                     Using defaults.""").formatted(getFilePath(), e.getMessage()));
         }
         return config;
+    }
+
+    private void saveTemplateToFile(File file) {
+        file.getParentFile().mkdirs();
+        try {
+            plugin.saveResource(getFilePath(), false);
+        } catch(IllegalArgumentException e){
+            plugin.getLogger().warning("No template file was found for \"%s\"".formatted(getFilePath()));
+        }
     }
 
     @Override
