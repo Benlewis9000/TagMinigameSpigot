@@ -2,6 +2,7 @@ package io.benlewis.tagminigame.util.countdown;
 
 import io.benlewis.tagminigame.TagPlugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.function.Consumer;
 
@@ -16,7 +17,7 @@ public class Countdown implements Runnable {
     private final Runnable startTask;
     private final Runnable endTask;
     private final Runnable cancelTask;
-    private final int taskId;
+    private final BukkitTask bukkitTask;
     private long remainingTicks;
 
     protected Countdown(TagPlugin plugin, long totalTicks, long intervalTicks, Consumer<Countdown> intervalTask,
@@ -29,7 +30,7 @@ public class Countdown implements Runnable {
         this.endTask = endTask;
         this.cancelTask = cancelTask;
         this.remainingTicks = totalTicks;
-        this.taskId = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(
+        this.bukkitTask = plugin.getServer().getScheduler().runTaskTimer(
                 plugin, this, 0L, intervalTicks);
     }
 
@@ -37,7 +38,7 @@ public class Countdown implements Runnable {
     public void run() {
         if (remainingTicks < 1){
             endTask.run();
-            plugin.getServer().getScheduler().cancelTask(taskId);
+            bukkitTask.cancel();
             return;
         }
         if (remainingTicks == totalTicks){
@@ -53,7 +54,7 @@ public class Countdown implements Runnable {
      */
     public void cancel(){
         cancelTask.run();
-        plugin.getServer().getScheduler().cancelTask(taskId);
+        bukkitTask.cancel();
     }
 
     /**
