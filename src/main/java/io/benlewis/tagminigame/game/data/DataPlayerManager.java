@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
-public class DataPlayerManager implements IPlayerManager<DataPlayer> {
+public class DataPlayerManager implements IPlayerManager {
 
     private final HashMap<UUID, DataPlayer> players = new HashMap<>();
 

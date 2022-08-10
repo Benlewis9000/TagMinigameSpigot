@@ -2,13 +2,13 @@ package io.benlewis.tagminigame.game.api;
 
 import java.util.Collection;
 
-public interface IGameManager <T extends IGame<? extends IPlayerWrapper, ? extends IGamePhase>> {
+public interface IGameManager {
 
     /**
      * Get the {@link IGame}s stored in this manager.
      * @return the games
      */
-    Collection<T> getGames();
+    Collection<IGame> getGames();
 
     /**
      * True if a game with the corresponding ID exists in this manager.
@@ -23,7 +23,7 @@ public interface IGameManager <T extends IGame<? extends IPlayerWrapper, ? exten
      * @param id of game
      * @return the game
      */
-    T getGame(int id);
+    IGame getGame(int id);
 
     /**
      * Create a new {@link IGame} registered with this manager. Throws {@link IllegalArgumentException} if the generated ID is
@@ -32,7 +32,7 @@ public interface IGameManager <T extends IGame<? extends IPlayerWrapper, ? exten
      * @param maxNoPlayers maximum number of players that can be in the game
      * @return game created
      */
-    T createGame(int minNoPlayers, int maxNoPlayers);
+    IGame createGame(int minNoPlayers, int maxNoPlayers);
 
     /**
      * Delete a game, removing it from the manager (if present).
