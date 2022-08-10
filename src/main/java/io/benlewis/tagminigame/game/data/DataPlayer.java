@@ -1,6 +1,6 @@
 package io.benlewis.tagminigame.game.data;
 
-import io.benlewis.tagminigame.game.api.IPlayerWrapper;
+import io.benlewis.tagminigame.game.api.PlayerWrapper;
 import org.bukkit.Server;
 import org.bukkit.entity.Player;
 
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
-public class DataPlayer implements IPlayerWrapper {
+public class DataPlayer implements PlayerWrapper {
 
     private final Server server;
     private final UUID playerUuid;

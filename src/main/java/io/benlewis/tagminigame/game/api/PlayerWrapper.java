@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public interface IPlayerWrapper {
+public interface PlayerWrapper {
 
     // TODO should getPlayer be removed? wrapper and maps should be UUID based, what if player is not online?
     // probably not - very useful since ultimately the wrappers were a workaround to not being able to extend Player
@@ -21,7 +21,7 @@ public interface IPlayerWrapper {
     UUID getUUID();
 
     /**
-     * Get the ID of the {@link IGame} the player is in
+     * Get the ID of the {@link Game} the player is in
      * @return id of player's game
      */
      int getGameId();

@@ -1,8 +1,8 @@
 package io.benlewis.tagminigame.game.tag;
 
 import io.benlewis.tagminigame.TagPlugin;
-import io.benlewis.tagminigame.game.api.IGame;
-import io.benlewis.tagminigame.game.api.IGamePhase;
+import io.benlewis.tagminigame.game.api.Game;
+import io.benlewis.tagminigame.game.api.GamePhase;
 import io.benlewis.tagminigame.game.data.DataPlayerManager;
 import io.benlewis.tagminigame.util.countdown.Countdown;
 import io.benlewis.tagminigame.util.countdown.CountdownBuilder;
@@ -18,7 +18,7 @@ import static io.benlewis.tagminigame.game.tag.TagGamePhase.GAME;
 import static io.benlewis.tagminigame.game.tag.TagGamePhase.LOBBY;
 import static java.util.Objects.requireNonNull;
 
-public class TagGame implements IGame {
+public class TagGame implements Game {
 
     private final TagPlugin plugin;
     private final int id;
@@ -26,7 +26,7 @@ public class TagGame implements IGame {
     private final int maxPlayers;
     private final int minPlayers;
     private final int countdownTimeSeconds;
-    private IGamePhase phase;
+    private GamePhase phase;
     private Countdown countdown;
 
     protected TagGame(TagPlugin plugin, int id, int minPlayers, int maxPlayers){
@@ -124,12 +124,12 @@ public class TagGame implements IGame {
     }
 
     @Override
-    public IGamePhase getPhase() {
+    public GamePhase getPhase() {
         return this.phase;
     }
 
     @Override
-    public void setPhase(IGamePhase phase) {
+    public void setPhase(GamePhase phase) {
         this.phase = phase;
     }
 

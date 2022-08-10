@@ -1,6 +1,6 @@
 package io.benlewis.tagminigame.game.data;
 
-import io.benlewis.tagminigame.game.api.IPlayerManager;
+import io.benlewis.tagminigame.game.api.PlayerManager;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -8,7 +8,7 @@ import java.util.UUID;
 
 import static java.util.Objects.requireNonNull;
 
-public class DataPlayerManager implements IPlayerManager {
+public class DataPlayerManager implements PlayerManager {
 
     private final HashMap<UUID, DataPlayer> players = new HashMap<>();
 

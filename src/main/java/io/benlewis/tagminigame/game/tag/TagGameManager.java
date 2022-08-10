@@ -1,8 +1,8 @@
 package io.benlewis.tagminigame.game.tag;
 
 import io.benlewis.tagminigame.TagPlugin;
-import io.benlewis.tagminigame.game.api.IGame;
-import io.benlewis.tagminigame.game.api.IGameManager;
+import io.benlewis.tagminigame.game.api.Game;
+import io.benlewis.tagminigame.game.api.GameManager;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
-public class TagGameManager implements IGameManager {
+public class TagGameManager implements GameManager {
 
     private final TagPlugin plugin;
     private final Map<Integer, TagGame> games;
@@ -23,7 +23,7 @@ public class TagGameManager implements IGameManager {
     }
 
     @Override
-    public Collection<IGame> getGames() {
+    public Collection<Game> getGames() {
         return Collections.unmodifiableCollection(games.values());
     }
 

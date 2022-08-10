@@ -1,6 +1,6 @@
 package io.benlewis.tagminigame.game.api;
 
-public interface IGame extends IPlayerManager {
+public interface Game extends PlayerManager {
 
     /**
      * Get the ID of the game.
@@ -27,15 +27,15 @@ public interface IGame extends IPlayerManager {
     boolean isFull();
 
     /**
-     * Get the current {@link IGamePhase} the game is in.
+     * Get the current {@link GamePhase} the game is in.
      * @return current game phase
      */
-    IGamePhase getPhase();
+    GamePhase getPhase();
 
     /**
-     * Set the current {@link IGamePhase} of the game.
+     * Set the current {@link GamePhase} of the game.
      * @param phase to set game to
      */
-    void setPhase(IGamePhase phase);
+    void setPhase(GamePhase phase);
 
 }
